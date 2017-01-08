@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xml:ns:th="http://www.thymeleaf.org">
+<head>
+    <title>Forum</title>
+</head>
+<body>
+<h1>Forum</h1>
+<h2 th:text="${board.name}"></h2>
+<ul>
+    <li th:each="topic : ${board.topics}">
+        <a th:href="@{/topic/} + ${topic.id}" th:text="${topic.name}"></a>
+    </li>
+</ul>
+</body>
+</html>

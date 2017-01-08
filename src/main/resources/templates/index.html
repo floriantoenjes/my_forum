@@ -1,9 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html xml:ns:th="http://www.thymeleaf.org">
 <head>
-
+    <title>Forum</title>
 </head>
 <body>
-
+    <h1>Forum</h1>
+    <h2>Boards</h2>
+    <ul>
+        <li th:each="board : ${boards}">
+            <a th:href="@{/boards/} + ${board.id}" th:text="${board.name}"></a>
+        </li>
+    </ul>
 </body>
 </html>

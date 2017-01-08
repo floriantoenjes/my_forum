@@ -1,4 +1,7 @@
 package com.floriantoenjes.forum.board;
 
-public interface BoardRepository {
+import org.springframework.data.repository.PagingAndSortingRepository;
+
+public interface BoardRepository extends PagingAndSortingRepository<Board, Long> {
+
 }

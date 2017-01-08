@@ -1,4 +1,9 @@
 package com.floriantoenjes.forum.user;
 
-public class Role {
+import com.floriantoenjes.forum.core.BaseEntity;
+
+import javax.persistence.Entity;
+
+@Entity
+public class Role extends BaseEntity{
 }

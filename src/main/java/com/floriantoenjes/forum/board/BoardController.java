@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("boards")
 public class BoardController {
     @Autowired
     BoardService boardService;
@@ -15,13 +16,13 @@ public class BoardController {
     @Autowired
     private TopicService topicService;
 
-    @RequestMapping("index")
+    @RequestMapping("/")
     public String index(Model model) {
         model.addAttribute("boards", boardService.findAll());
         return "index";
     }
 
-    @RequestMapping("boards/{id}")
+    @RequestMapping("/{id}")
     public String board(@PathVariable Long id, Model model) {
         Board board = boardService.findOne(id);
 

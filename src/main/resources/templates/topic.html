@@ -8,7 +8,7 @@
 <h2 th:text="${topic.name}"></h2>
 <ul>
     <li th:each="post : ${topic.posts}">
-        <p th:text="'Author ' + ${post.author}"></p>
+        <p th:text="'Author: ' + ${post.author.username}"></p>
         <p th:text="${post.text}"></p>
     </li>
 </ul>

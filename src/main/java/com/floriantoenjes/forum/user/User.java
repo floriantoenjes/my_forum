@@ -19,7 +19,7 @@ public class User extends BaseEntity {
     @OneToMany
     List<Topic> topics;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
     List<Post> posts;
 
     public User() {
@@ -65,8 +65,4 @@ public class User extends BaseEntity {
         this.posts = posts;
     }
 
-    public boolean addPost(Post post) {
-        post.setAuthor(this);
-        return this.posts.add(post);
-    }
 }

@@ -4,13 +4,17 @@
     <title>Forum</title>
 </head>
 <body>
-<h1>Forum</h1>
-<h2 th:text="${topic.name}"></h2>
-<ul>
-    <li th:each="post : ${topic.posts}">
-        <p th:text="'Author: ' + ${post.author.username}"></p>
-        <p th:text="${post.text}"></p>
-    </li>
-</ul>
+    <h1>Forum</h1>
+    <h2 th:text="${topic.name}"></h2>
+    <ul>
+        <li th:each="post : ${topic.posts}">
+            <p th:text="'Author: ' + ${post.author.username}"></p>
+            <p th:text="${post.text}"></p>
+        </li>
+    </ul>
+    <form th:action="@{/topics/} + ${topic.id}" method="post">
+        <input type="text" name="reply"/>
+        <button type="submit">Reply</button>
+    </form>
 </body>
 </html>

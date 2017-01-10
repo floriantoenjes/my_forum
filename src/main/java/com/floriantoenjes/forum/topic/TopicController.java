@@ -1,7 +1,6 @@
 package com.floriantoenjes.forum.topic;
 
 import com.floriantoenjes.forum.post.Post;
-import com.floriantoenjes.forum.post.PostService;
 import com.floriantoenjes.forum.user.User;
 import com.floriantoenjes.forum.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("topics")
@@ -31,7 +29,7 @@ public class TopicController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public String addReply(@PathVariable Long id, Post reply) {
-        //ToDo: Add real user
+        //ToDo: Add a "real" user
         User user = new User("TestUser", "password");
         userService.save(user);
         reply.setAuthor(user);

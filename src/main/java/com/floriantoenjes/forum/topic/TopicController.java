@@ -1,6 +1,7 @@
 package com.floriantoenjes.forum.topic;
 
 import com.floriantoenjes.forum.post.Post;
+import com.floriantoenjes.forum.user.Role;
 import com.floriantoenjes.forum.user.User;
 import com.floriantoenjes.forum.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class TopicController {
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public String addReply(@PathVariable Long id, Post reply) {
         //ToDo: Add a "real" user
-        User user = new User("TestUser", "password");
+        User user = new User("TestUser", "password", new Role("ROLE_USER"));
         userService.save(user);
         reply.setAuthor(user);
 

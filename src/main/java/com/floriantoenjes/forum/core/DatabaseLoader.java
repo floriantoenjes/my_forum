@@ -4,6 +4,7 @@ import com.floriantoenjes.forum.board.Board;
 import com.floriantoenjes.forum.board.BoardService;
 import com.floriantoenjes.forum.post.Post;
 import com.floriantoenjes.forum.topic.Topic;
+import com.floriantoenjes.forum.user.Role;
 import com.floriantoenjes.forum.user.User;
 import com.floriantoenjes.forum.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,9 @@ public class DatabaseLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        User user1 = new User("user1", "password");
+        User user1 = new User("user1", "password", new Role("ROLE_USER"));
         userService.save(user1);
-        User user2 = new User("user2", "password");
+        User user2 = new User("user2", "password", new Role("ROLE_USER"));
         userService.save(user2);
 
 

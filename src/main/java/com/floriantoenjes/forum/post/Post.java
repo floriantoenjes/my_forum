@@ -51,4 +51,6 @@ public class Post extends BaseEntity {
     public void setTopic(Topic topic) {
         this.topic = topic;
     }
+
+
 }

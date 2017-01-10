@@ -12,8 +12,9 @@
             <p th:text="${post.text}"></p>
         </li>
     </ul>
-    <form th:action="@{/topics/} + ${topic.id}" method="post">
-        <input type="text" name="reply"/>
+    <form th:action="@{/topics/} + ${topic.id}" method="post" th:object="${reply}">
+        <input type="hidden" th:field="*{id}"/>
+        <input type="text" th:field="*{text}"/>
         <button type="submit">Reply</button>
     </form>
 </body>

@@ -10,6 +10,7 @@
         <li th:each="post : ${topic.posts}">
             <p th:text="'Author: ' + ${post.author.username}"></p>
             <p th:text="${post.text}"></p>
+            <a th:href="@{/posts/} + ${post.id}">Edit</a>
         </li>
     </ul>
     <form th:action="@{/topics/} + ${topic.id}" method="post" th:object="${reply}">

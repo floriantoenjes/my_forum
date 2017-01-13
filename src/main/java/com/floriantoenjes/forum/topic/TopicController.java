@@ -5,6 +5,7 @@ import com.floriantoenjes.forum.user.Role;
 import com.floriantoenjes.forum.user.User;
 import com.floriantoenjes.forum.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,11 +31,9 @@ public class TopicController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public String addReply(@PathVariable Long id, Post reply) {
-        //ToDo: Add a "real" user
-        User user = new User("TestUser", "password", new Role("ROLE_USER"));
-        userService.save(user);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByUsername(username);
         reply.setAuthor(user);
-
         Topic topic = topicService.findOne(id);
         topic.addPost(reply);
         topicService.save(topic);

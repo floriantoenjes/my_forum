@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xml:ns:th="http://www.thymeleaf.org">
+<head>
+    <title>Forum</title>
+</head>
+<body>
+    <h1>Forum</h1>
+    <form th:action="@{/posts/} + ${post.id}" method="post">
+        <textarea name="text" th:text="${post.text}"></textarea>
+        <button type="submit">Update post</button>
+    </form>
+</body>
+</html>

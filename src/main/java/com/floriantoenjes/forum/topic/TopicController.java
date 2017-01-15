@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Controller
 @RequestMapping("topics")
 public class TopicController {
@@ -24,8 +27,22 @@ public class TopicController {
 
     @RequestMapping("/{id}")
     public String topic(@PathVariable Long id, Model model) {
-        model.addAttribute("topic", topicService.findOne(id));
+        Topic topic = topicService.findOne(id);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByUsername(username);
+        model.addAttribute("topic", topic);
         // ToDo: Add a map which states if user is author of post
+        Map<Post, Boolean> postMap = new HashMap<>();
+        topic.getPosts().forEach( post -> {
+            if (user == topic.getAuthor()) {
+                postMap.put(post, true);
+            } else {
+                postMap.put(post, false);
+            }
+        });
+
+
+        model.addAttribute("postMap", postMap):
         model.addAttribute("reply", new Post());
         return "topic";
     }

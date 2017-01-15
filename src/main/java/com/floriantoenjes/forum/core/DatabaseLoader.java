@@ -35,12 +35,15 @@ public class DatabaseLoader implements ApplicationRunner {
 
         Board board1 = new Board("First Board");
         Topic topic1 = new Topic("First Topic");
+
         Post post1 = new Post(user1,"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, " +
                 "sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, " +
                 "sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet ");
+
         Post post2 = new Post(user2, "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy " +
                 "eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et " +
                 "accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est ");
+
         board1.addTopic(topic1);
         topic1.addPost(post1);
         topic1.addPost(post2);

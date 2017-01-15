@@ -25,6 +25,7 @@ public class TopicController {
     @RequestMapping("/{id}")
     public String topic(@PathVariable Long id, Model model) {
         model.addAttribute("topic", topicService.findOne(id));
+        // ToDo: Add a map which states if user is author of post
         model.addAttribute("reply", new Post());
         return "topic";
     }
@@ -33,10 +34,14 @@ public class TopicController {
     public String addReply(@PathVariable Long id, Post reply) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
-        reply.setAuthor(user);
-        Topic topic = topicService.findOne(id);
-        topic.addPost(reply);
-        topicService.save(topic);
+        if (user == null) {
+            // ToDo: Add Flashmessage
+        } else {
+            reply.setAuthor(user);
+            Topic topic = topicService.findOne(id);
+            topic.addPost(reply);
+            topicService.save(topic);
+        }
         return String.format("redirect:/topics/%s", id);
     }
 

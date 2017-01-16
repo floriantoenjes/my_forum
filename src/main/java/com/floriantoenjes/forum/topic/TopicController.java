@@ -30,19 +30,18 @@ public class TopicController {
         Topic topic = topicService.findOne(id);
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
-        model.addAttribute("topic", topic);
         // ToDo: Add a map which states if user is author of post
         Map<Post, Boolean> postMap = new HashMap<>();
         topic.getPosts().forEach( post -> {
-            if (user == topic.getAuthor()) {
+            if (user == post.getAuthor()) {
                 postMap.put(post, true);
             } else {
                 postMap.put(post, false);
             }
         });
 
-
-        model.addAttribute("postMap", postMap):
+        model.addAttribute("topic", topic);
+        model.addAttribute("postMap", postMap);
         model.addAttribute("reply", new Post());
         return "topic";
     }

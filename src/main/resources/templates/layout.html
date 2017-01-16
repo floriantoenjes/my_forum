@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xml:ns:th="http://www.thymeleaf.org">
+<head th:fragment="head" lang="en">
+    <meta charset="UTF-8"/>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Forum</title>
+</head>
+<body>
+    <ul th:fragment="nav">
+        <li>
+            <a th:href="@{/boards/}">Home</a>
+        </li>
+        <li sec:authorize="!isAuthenticated()">
+            <a th:href="@{/login}">Login</a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+            <a th:href="@{/logout}">Logout</a>
+        </li>
+    </ul>
+</body>
+</html>

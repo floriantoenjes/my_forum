@@ -7,10 +7,10 @@
     <h1>Forum</h1>
     <h2 th:text="${topic.name}"></h2>
     <ul>
-        <li th:each="post : ${topic.posts}">
-            <p th:text="'Author: ' + ${post.author.username}"></p>
-            <p th:text="${post.text}"></p>
-            <a th:href="@{/posts/} + ${post.id}">Edit</a>
+        <li th:each="postEntry : ${postMap}">
+            <p th:text="'Author: ' + ${postEntry.key.author.username}"></p>
+            <p th:text="${postEntry.key.text}"></p>
+            <a th:if="${postEntry.value}" th:href="@{/posts/} + ${postEntry.key.id}">Edit</a>
         </li>
     </ul>
     <form th:action="@{/topics/} + ${topic.id}" method="post" th:object="${reply}">

@@ -4,12 +4,13 @@
     <title>Forum</title>
 </head>
 <body>
-<h1>Forum</h1>
-<h2 th:text="${board.name}"></h2>
-<ul>
-    <li th:each="topic : ${board.topics}">
-        <a th:href="@{/topics/} + ${topic.id}" th:text="${topic.name}"></a>
-    </li>
-</ul>
+    <ul th:replace="layout :: nav"></ul>
+    <h1>Forum</h1>
+    <h2 th:text="${board.name}"></h2>
+    <ul>
+        <li th:each="topic : ${board.topics}">
+            <a th:href="@{/topics/} + ${topic.id}" th:text="${topic.name}"></a>
+        </li>
+    </ul>
 </body>
 </html>

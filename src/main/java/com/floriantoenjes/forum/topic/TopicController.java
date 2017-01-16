@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Controller
@@ -32,7 +33,7 @@ public class TopicController {
         User user = userService.findByUsername(username);
 
         // ToDo: Put the posts into the right order
-        Map<Post, Boolean> postMap = new HashMap<>();
+        Map<Post, Boolean> postMap = new LinkedHashMap<>();
         topic.getPosts().forEach( post -> {
             if (user == post.getAuthor()) {
                 postMap.put(post, true);

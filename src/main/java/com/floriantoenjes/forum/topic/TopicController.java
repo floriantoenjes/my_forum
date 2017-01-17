@@ -30,7 +30,6 @@ public class TopicController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
 
-        // ToDo: Put the posts into the right order
         Map<Post, Boolean> postMap = new LinkedHashMap<>();
         topic.getPosts().forEach( post -> {
             if (user == post.getAuthor()) {

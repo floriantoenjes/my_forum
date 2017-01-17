@@ -14,7 +14,7 @@
             <a th:if="${postEntry.value}" th:href="@{/posts/} + ${postEntry.key.id}">Edit</a>
         </li>
     </ul>
-    <form th:action="@{/topics/} + ${topic.id}" method="post" th:object="${reply}">
+    <form sec:authorize="isAuthenticated()" th:action="@{/topics/} + ${topic.id}" method="post" th:object="${reply}">
         <input type="hidden" th:field="*{id}"/>
         <textarea th:field="*{text}" rows="5" cols="50"></textarea>
         <button type="submit">Reply</button>

@@ -34,6 +34,8 @@ public class DatabaseLoader implements ApplicationRunner {
 
 
         Board board1 = new Board("First Board");
+        Board board2 = new Board("Second Board");
+
         Topic topic1 = new Topic("First Topic");
 
         Post post1 = new Post(user1,"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, " +
@@ -49,5 +51,6 @@ public class DatabaseLoader implements ApplicationRunner {
         topic1.addPost(post2);
 
         boardService.save(board1);
+        boardService.save(board2);
     }
 }

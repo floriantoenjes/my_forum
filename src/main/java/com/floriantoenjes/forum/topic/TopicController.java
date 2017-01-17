@@ -1,5 +1,7 @@
 package com.floriantoenjes.forum.topic;
 
+import com.floriantoenjes.forum.board.Board;
+import com.floriantoenjes.forum.board.BoardService;
 import com.floriantoenjes.forum.post.Post;
 import com.floriantoenjes.forum.user.User;
 import com.floriantoenjes.forum.user.UserService;
@@ -7,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -24,6 +24,9 @@ public class TopicController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    BoardService boardService;
+
     @RequestMapping("/{id}")
     public String topic(@PathVariable Long id, Model model) {
         Topic topic = topicService.findOne(id);
@@ -31,7 +34,7 @@ public class TopicController {
         User user = userService.findByUsername(username);
 
         Map<Post, Boolean> postMap = new LinkedHashMap<>();
-        topic.getPosts().forEach( post -> {
+        topic.getPosts().forEach(post -> {
             if (user == post.getAuthor()) {
                 postMap.put(post, true);
             } else {
@@ -58,6 +61,21 @@ public class TopicController {
             topicService.save(topic);
         }
         return String.format("redirect:/topics/%s", id);
+    }
+
+    @RequestMapping("/add")
+    public String newTopicForm(@RequestParam Long boardId, Model model) {
+        Board board = boardService.findOne(boardId);
+        model.addAttribute("board", board);
+        model.addAttribute("topic", new Topic());
+        return "topic_form";
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String addTopic(Topic topic, @RequestParam Long boardId) {
+        boardService.findOne(boardId).addTopic(topic);
+        topicService.save(topic);
+        return String.format("redirect:/topics/%s", topic.getId());
     }
 
 }

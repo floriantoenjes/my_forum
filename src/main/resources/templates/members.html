@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xml:ns:th="http://www.thymeleaf.org">
+<head>
+    <title>Forum</title>
+</head>
+<body>
+    <ul th:replace="layout :: nav"></ul>
+    <h1>Forum</h1>
+    <h2>Forum Members</h2>
+    <ul>
+        <li th:each="user : ${users}">
+            <p th:text="${user.username}"></p>
+        </li>
+    </ul>
+</body>
+</html>

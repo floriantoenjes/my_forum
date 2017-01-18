@@ -12,6 +12,6 @@
             <a th:href="@{/topics/} + ${topic.id}" th:text="${topic.name}"></a>
         </li>
     </ul>
-    <a th:href="@{/topics/add?boardId=} + ${board.id}">New Topic</a>
+    <a sec:authorize="isAuthenticated()" th:href="@{/topics/add?boardId=} + ${board.id}">New Topic</a>
 </body>
 </html>

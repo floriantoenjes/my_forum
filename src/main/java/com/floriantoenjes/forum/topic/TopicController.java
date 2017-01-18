@@ -65,6 +65,12 @@ public class TopicController {
 
     @RequestMapping("/add")
     public String newTopicForm(@RequestParam Long boardId, Model model) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByUsername(username);
+        if (user==null) {
+            return String.format("redirect:/boards/%s", boardId);
+        }
+
         Board board = boardService.findOne(boardId);
         model.addAttribute("board", board);
         model.addAttribute("topic", new Topic());
@@ -72,8 +78,20 @@ public class TopicController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addTopic(Topic topic, @RequestParam Long boardId) {
+    public String addTopic(Topic topic, @RequestParam Long boardId, @RequestParam String firstPostText) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByUsername(username);
+
+        if (user==null) {
+            return String.format("redirect:/boards/%s", boardId);
+        }
+
         boardService.findOne(boardId).addTopic(topic);
+        Post post = new Post();
+        post.setAuthor(user);
+        post.setText(firstPostText);
+        topic.addPost(post);
+        topic.setAuthor(user);
         topicService.save(topic);
         return String.format("redirect:/topics/%s", topic.getId());
     }

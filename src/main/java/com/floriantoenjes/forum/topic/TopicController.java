@@ -60,7 +60,7 @@ public class TopicController {
             topic.addPost(reply);
             topicService.save(topic);
         }
-        return String.format("redirect:/topics/%s", id);
+        return "redirect:/topics/{id}";
     }
 
     @RequestMapping("/add")

@@ -40,7 +40,7 @@ public class PostController {
             postService.save(post);
         }
 
-        return String.format("redirect:/topics/%s", post.getTopic().getId());
+        return "redirect:/topics/{id}";
     }
 
 }

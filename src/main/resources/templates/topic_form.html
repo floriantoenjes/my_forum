@@ -11,11 +11,17 @@
         <!--<input type="hidden" th:field="*{id}"/>-->
         <input type="hidden" th:value="${board.id}" name="boardId"/>
 
-        <label for="name">Title:</label>
-        <input type="text" th:field="*{name}"/>
+        <div>
+            <label for="name">Title:</label>
+            <br/>
+            <input type="text" th:field="*{name}"/>
+        </div>
 
-        <label for="firstPost">Message: </label>
-        <textarea id="firstPost" name="firstPostText" rows="10" cols="50"></textarea>
+        <div>
+            <label for="firstPost">Message: </label>
+            <br/>
+            <textarea id="firstPost" name="firstPostText" rows="10" cols="50"></textarea>
+        </div>
 
         <button type="submit">Reply</button>
     </form>

@@ -1,6 +1,7 @@
 package com.floriantoenjes.forum.board;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +13,10 @@ public class BoardService {
 
     public List<Board> findAll() {
         return (List<Board>) boardRepository.findAll();
+    }
+
+    public List<Board> findAll(PageRequest pageRequest) {
+        return (List<Board>) boardRepository.findAll(pageRequest);
     }
 
     public Board findOne(Long id) {

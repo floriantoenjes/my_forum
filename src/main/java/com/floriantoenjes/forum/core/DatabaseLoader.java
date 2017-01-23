@@ -12,6 +12,8 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.stream.IntStream;
+
 @Component
 public class DatabaseLoader implements ApplicationRunner {
 
@@ -49,6 +51,29 @@ public class DatabaseLoader implements ApplicationRunner {
         board1.addTopic(topic1);
         topic1.addPost(post1);
         topic1.addPost(post2);
+
+
+        String[] templates = {
+                "What is %s?",
+                "Having trouble running %s",
+                "%s resources",
+                "%s is awesome"
+        };
+
+        String[] buzzwords = {
+                "Java",
+                "Scala",
+                "Linux"
+        };
+
+        IntStream.range(0, 20)
+                .forEach(i -> {
+                    String template = templates[i % templates.length];
+                    String buzzword = buzzwords[i % buzzwords.length];
+                    Topic t = new Topic(String.format(template, buzzword));
+                    board1.addTopic(t);
+                });
+
 
         boardService.save(board1);
         boardService.save(board2);

@@ -15,10 +15,6 @@ public class BoardService {
         return (List<Board>) boardRepository.findAll();
     }
 
-    public List<Board> findAll(PageRequest pageRequest) {
-        return (List<Board>) boardRepository.findAll(pageRequest);
-    }
-
     public Board findOne(Long id) {
         return boardRepository.findOne(id);
     }

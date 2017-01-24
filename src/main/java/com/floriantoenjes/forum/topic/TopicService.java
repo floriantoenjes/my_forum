@@ -1,6 +1,7 @@
 package com.floriantoenjes.forum.topic;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,8 @@ public class TopicService {
         return (List<Topic>) topicRepository.findAll();
     }
 
-    public List<Topic> findAll(PageRequest pageRequest) {
-        return topicRepository.findAll(pageRequest).getContent();
+    public Page findAll(PageRequest pageRequest) {
+        return topicRepository.findAll(pageRequest);
     }
 
     public Topic findOne(Long id) {

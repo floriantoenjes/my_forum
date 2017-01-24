@@ -12,6 +12,11 @@
             <a th:href="@{/topics/} + ${topic.id}" th:text="${topic.name}"></a>
         </li>
     </ul>
+    <ul>
+       <li th:each="page : ${pages}">
+           <a th:href="@{/boards/} + ${board.id} + '?page=' + ${page}" th:text="'Page ' + ${page + 1}"></a>
+       </li>
+    </ul>
     <a sec:authorize="isAuthenticated()" th:href="@{/topics/add?boardId=} + ${board.id}">New Topic</a>
 </body>
 </html>

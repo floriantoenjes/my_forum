@@ -29,6 +29,10 @@ public class DatabaseLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        final String LOREM_IPSUM = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy " +
+        "eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et " +
+                "accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est ";
+
         User user1 = new User("user1", "password", new Role("ROLE_USER"));
         userService.save(user1);
         User user2 = new User("user2", "password", new Role("ROLE_USER"));
@@ -40,13 +44,9 @@ public class DatabaseLoader implements ApplicationRunner {
 
         Topic topic1 = new Topic("First Topic");
 
-        Post post1 = new Post(user1,"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, " +
-                "sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, " +
-                "sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet ");
+        Post post1 = new Post(user1,LOREM_IPSUM);
 
-        Post post2 = new Post(user2, "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy " +
-                "eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et " +
-                "accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est ");
+        Post post2 = new Post(user2, LOREM_IPSUM);
 
         board1.addTopic(topic1);
         topic1.addPost(post1);
@@ -71,6 +71,7 @@ public class DatabaseLoader implements ApplicationRunner {
                     String template = templates[i % templates.length];
                     String buzzword = buzzwords[i % buzzwords.length];
                     Topic t = new Topic(String.format(template, buzzword));
+                    t.addPost(new Post(user1, LOREM_IPSUM));
                     board1.addTopic(t);
                 });
 

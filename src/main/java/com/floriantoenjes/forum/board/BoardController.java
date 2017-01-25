@@ -35,7 +35,7 @@ public class BoardController {
             page = 0;
         }
 
-        Page p = topicService.findByBoard(board, new PageRequest(page, 5));
+        Page p = topicService.findByBoard(board, new PageRequest(page, 10));
         ArrayList<Integer> pages = new ArrayList<>();
         IntStream.range(0, p.getTotalPages()).forEach(pages::add);
 

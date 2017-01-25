@@ -17,7 +17,7 @@ import java.util.stream.IntStream;
 @RequestMapping("boards")
 public class BoardController {
     @Autowired
-    BoardService boardService;
+    private BoardService boardService;
 
     @Autowired
     private TopicService topicService;
@@ -42,6 +42,7 @@ public class BoardController {
         model.addAttribute("board", board);
         model.addAttribute("topics", p.getContent());
         model.addAttribute("pages", pages);
+        model.addAttribute("currentPage", page);
         return "board";
     }
 

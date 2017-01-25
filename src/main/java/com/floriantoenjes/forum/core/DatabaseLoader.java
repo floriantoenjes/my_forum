@@ -44,7 +44,7 @@ public class DatabaseLoader implements ApplicationRunner {
 
         Topic topic1 = new Topic("First Topic");
 
-        Post post1 = new Post(user1,LOREM_IPSUM);
+        Post post1 = new Post(user1, LOREM_IPSUM);
 
         Post post2 = new Post(user2, LOREM_IPSUM);
 

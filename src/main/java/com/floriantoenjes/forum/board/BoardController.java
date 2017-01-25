@@ -36,7 +36,7 @@ public class BoardController {
         }
 
         // ToDo: Paging introduced a bug. All topics are now added to view regardless to what board they belong
-        Page p = topicService.findAll(new PageRequest(page, 5));
+        Page p = topicService.findByBoard(board, new PageRequest(page, 5));
         ArrayList<Integer> pages = new ArrayList<>();
         IntStream.range(0, p.getTotalPages()).forEach(pages::add);
 

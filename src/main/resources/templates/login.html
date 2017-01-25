@@ -8,8 +8,8 @@
     <h1>Forum</h1>
     <h3>Login</h3>
     <form th:action="@{/login}" method="post" th:object="${user}">
-        <input th:field="*{username}" placeholder="Username"> </input>
-        <input th:field="*{password}" placeholder="Password" type="password"> </input>
+        <input th:field="*{username}" placeholder="Username"/>
+        <input th:field="*{password}" placeholder="Password" type="password"/>
         <button type="submit">Login</button>
     </form>
 </body>

@@ -10,6 +10,7 @@
     <ul>
         <li th:each="topic : ${topics}">
             <a th:href="@{/topics/} + ${topic.id}" th:text="${topic.name}"></a>
+            <span th:text="'by ' + ${topic.author.username}"></span>
         </li>
     </ul>
     <ul>

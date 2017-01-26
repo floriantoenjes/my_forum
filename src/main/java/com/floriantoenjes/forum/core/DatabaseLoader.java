@@ -42,7 +42,7 @@ public class DatabaseLoader implements ApplicationRunner {
         Board board1 = new Board("First Board");
         Board board2 = new Board("Second Board");
 
-        Topic topic1 = new Topic("First Topic");
+        Topic topic1 = new Topic(user1,"First Topic");
 
         Post post1 = new Post(user1, LOREM_IPSUM);
 
@@ -70,7 +70,7 @@ public class DatabaseLoader implements ApplicationRunner {
                 .forEach(i -> {
                     String template = templates[i % templates.length];
                     String buzzword = buzzwords[i % buzzwords.length];
-                    Topic t = new Topic(String.format(template, buzzword));
+                    Topic t = new Topic(user1, String.format(template, buzzword));
                     t.addPost(new Post(user1, LOREM_IPSUM));
                     board1.addTopic(t);
                 });

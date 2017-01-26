@@ -81,7 +81,7 @@ public class TopicController {
     public String addTopic(Topic topic, @RequestParam Long boardId, @RequestParam String firstPostText) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
-
+        topic.setAuthor(user);
         if (user==null) {
             return String.format("redirect:/boards/%s", boardId);
         }

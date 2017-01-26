@@ -29,8 +29,9 @@ public class Topic extends BaseEntity {
         this.posts = new ArrayList<>();
     }
 
-    public Topic(String name) {
+    public Topic(User author, String name) {
         this();
+        this.author = author;
         this.name = name;
     }
 

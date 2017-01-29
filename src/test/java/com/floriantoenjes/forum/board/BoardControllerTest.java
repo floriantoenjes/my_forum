@@ -30,13 +30,13 @@ public class BoardControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    BoardService boardService;
+    private BoardService boardService;
 
     @Mock
-    TopicService topicService;
+    private TopicService topicService;
 
     @InjectMocks
-    BoardController boardController;
+    private BoardController boardController;
 
     @Before
     public void setUp() throws Exception {
@@ -66,7 +66,7 @@ public class BoardControllerTest {
         topicList.add(topic);
 
         when(topicService.findByBoard(board, new PageRequest(0, 10)))
-                .thenReturn(new PageImpl<Topic>(topicList));
+                .thenReturn(new PageImpl<>(topicList));
 
 
         mockMvc.perform(get("/boards/1"))

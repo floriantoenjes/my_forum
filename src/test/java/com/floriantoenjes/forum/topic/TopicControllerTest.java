@@ -51,7 +51,6 @@ public class TopicControllerTest {
         user = new User("test_user", "password", new Role("ROLE_USER"));
         userService.save(user);
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(user, null));
-
         mockMvc = MockMvcBuilders.standaloneSetup(topicController).build();
     }
 
@@ -63,6 +62,7 @@ public class TopicControllerTest {
         topicService.save(topic);
 
         mockMvc.perform(get("/topics/1"))
+
                 .andExpect(status().isOk())
                 .andExpect(view().name("topic"))
                 .andExpect(model().attribute("topic", any(Topic.class)));
@@ -75,7 +75,8 @@ public class TopicControllerTest {
         mockMvc.perform(post("/topics/1")
         .param("id" , "")
         .param("text", TEXT))
-        .andExpect(redirectedUrl("/topics/1"));
+
+                .andExpect(redirectedUrl("/topics/1"));
         Topic topic = topicService.findOne(1L);
         Post post = topic.getPosts().get(topic.getPosts().size() - 1);
         assertEquals(post.getText(), TEXT);
@@ -85,6 +86,7 @@ public class TopicControllerTest {
     public void newTopicFormTest() throws Exception {
         mockMvc.perform(get("/topics/add")
                 .param("boardId", "1"))
+
                 .andExpect(status().isOk())
                 .andExpect(view().name("topic_form"));
 
@@ -96,6 +98,7 @@ public class TopicControllerTest {
 
         mockMvc.perform(get("/topics/add")
                 .param("boardId", "1"))
+
                 .andExpect(redirectedUrl("/boards/1"));
     }
 
@@ -108,6 +111,7 @@ public class TopicControllerTest {
                 .param("boardId", "1")
                 .param("name", NAME)
                 .param("firstPostText", TEXT))
+
                 .andExpect(redirectedUrlPattern("/topics/*"));
         List<Topic> topicList = topicService.findAll();
         Topic topic = topicList.get(topicList.size() - 1);

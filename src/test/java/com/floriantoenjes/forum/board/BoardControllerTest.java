@@ -51,6 +51,7 @@ public class BoardControllerTest {
         when(boardService.findAll()).thenReturn(boardList);
 
         mockMvc.perform(get("/boards/"))
+
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"))
                 .andExpect(model().attribute("boards", boardList));
@@ -68,11 +69,12 @@ public class BoardControllerTest {
 
 
         mockMvc.perform(get("/boards/1"))
-        .andExpect(status().isOk())
-        .andExpect(view().name("board"))
-        .andExpect(model().attribute("board", board))
-        .andExpect(model().attribute("topics", topicList))
-        .andExpect(model().attribute("currentPage", 0));
+
+            .andExpect(status().isOk())
+            .andExpect(view().name("board"))
+            .andExpect(model().attribute("board", board))
+            .andExpect(model().attribute("topics", topicList))
+            .andExpect(model().attribute("currentPage", 0));
     }
 
 }

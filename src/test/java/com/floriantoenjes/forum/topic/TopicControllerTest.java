@@ -5,7 +5,6 @@ import com.floriantoenjes.forum.post.Post;
 import com.floriantoenjes.forum.user.Role;
 import com.floriantoenjes.forum.user.User;
 import com.floriantoenjes.forum.user.UserService;
-import org.hibernate.Hibernate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -23,7 +21,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.hamcrest.Matchers.any;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -50,7 +48,8 @@ public class TopicControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        user = userService.findByUsername("user1");
+        user = new User("test_user", "password", new Role("ROLE_USER"));
+        userService.save(user);
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(user, null));
 
         mockMvc = MockMvcBuilders.standaloneSetup(topicController).build();
@@ -101,8 +100,19 @@ public class TopicControllerTest {
     }
 
     @Test
-    public void addTopic() throws Exception {
+    public void addTopicTest() throws Exception {
+        final String NAME = "Test Topic";
+        final String TEXT = "Test text";
 
+        mockMvc.perform(post("/topics/add")
+                .param("boardId", "1")
+                .param("name", NAME)
+                .param("firstPostText", TEXT))
+                .andExpect(redirectedUrlPattern("/topics/*"));
+        List<Topic> topicList = topicService.findAll();
+        Topic topic = topicList.get(topicList.size() - 1);
+        assertEquals(topic.getName(), NAME);
+        assertEquals(topic.getPosts().get(0).getText(), TEXT);
     }
 
 }

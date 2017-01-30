@@ -1,5 +1,6 @@
 package com.floriantoenjes.forum.topic;
 
+import com.floriantoenjes.forum.board.Board;
 import com.floriantoenjes.forum.board.BoardService;
 import com.floriantoenjes.forum.post.Post;
 import com.floriantoenjes.forum.user.Role;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -69,16 +71,21 @@ public class TopicControllerTest {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     public void addReplyTest() throws Exception {
         final String TEXT = "Test post";
+        Topic topic = new Topic(user, "Test Topic");
+        Post post = new Post(user, "Test Post");
+        topic.addPost(post);
+        topicService.save(topic);
 
         mockMvc.perform(post("/topics/1")
         .param("id" , "")
         .param("text", TEXT))
 
                 .andExpect(redirectedUrl("/topics/1"));
-        Topic topic = topicService.findOne(1L);
-        Post post = topic.getPosts().get(topic.getPosts().size() - 1);
+        topic = topicService.findOne(1L);
+        post = topic.getPosts().get(topic.getPosts().size() - 1);
         assertEquals(post.getText(), TEXT);
     }
 
@@ -106,6 +113,8 @@ public class TopicControllerTest {
     public void addTopicTest() throws Exception {
         final String NAME = "Test Topic";
         final String TEXT = "Test text";
+        Board board = new Board("Test Board");
+        boardService.save(board);
 
         mockMvc.perform(post("/topics/add")
                 .param("boardId", "1")

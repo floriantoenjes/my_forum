@@ -55,7 +55,7 @@ public class PostControllerTest {
         mockMvc.perform(get("/posts/1"))
 
                 .andExpect(status().isOk())
-                .andExpect(view().name("post"))
+                .andExpect(view().name("post_form"))
                 .andExpect(model().attribute("post", post));
     }
 

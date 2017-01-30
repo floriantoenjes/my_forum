@@ -25,7 +25,7 @@ public class PostController {
     public String postForm(@PathVariable Long id, Model model) {
         Post post = postService.findOne(id);
         model.addAttribute("post", post);
-        return "post";
+        return "post_form";
     }
 
     @RequestMapping(value = "/{id}" ,method = RequestMethod.POST)

@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class PostController {
 
     @Autowired
-    PostService postService;
+    private PostService postService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @RequestMapping("/{id}")
     public String postForm(@PathVariable Long id, Model model) {

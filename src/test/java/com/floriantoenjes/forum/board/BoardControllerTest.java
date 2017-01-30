@@ -60,11 +60,9 @@ public class BoardControllerTest {
     public void viewBoardDetailTest() throws Exception {
         Board board = new Board("Test Board");
         when(boardService.findOne(1L)).thenReturn(board);
-
         Topic topic = new Topic(new User("user", "password", new Role("ROLE_USER")), "Test Topic");
         List<Topic> topicList = new ArrayList<>();
         topicList.add(topic);
-
         when(topicService.findByBoard(board, new PageRequest(0, 10)))
                 .thenReturn(new PageImpl<>(topicList));
 

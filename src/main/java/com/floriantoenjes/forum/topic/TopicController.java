@@ -9,23 +9,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.transaction.Transactional;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Controller
 @RequestMapping("topics")
+@Transactional
 public class TopicController {
 
     @Autowired
-    TopicService topicService;
+    private TopicService topicService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    BoardService boardService;
+    private BoardService boardService;
 
     @RequestMapping("/{id}")
     public String topic(@PathVariable Long id, Model model) {
@@ -67,7 +72,7 @@ public class TopicController {
     public String newTopicForm(@RequestParam Long boardId, Model model) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
-        if (user==null) {
+        if (user == null) {
             return String.format("redirect:/boards/%s", boardId);
         }
 
@@ -82,7 +87,7 @@ public class TopicController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
         topic.setAuthor(user);
-        if (user==null) {
+        if (user == null) {
             return String.format("redirect:/boards/%s", boardId);
         }
 

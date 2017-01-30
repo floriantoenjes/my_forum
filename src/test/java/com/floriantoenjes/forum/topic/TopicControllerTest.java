@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -88,6 +89,15 @@ public class TopicControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("topic_form"));
 
+    }
+
+    @Test
+    public void newTopicFormWithoutUserTest() throws Exception {
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(null, null));
+
+        mockMvc.perform(get("/topics/add")
+                .param("boardId", "1"))
+                .andExpect(redirectedUrl("/boards/1"));
     }
 
     @Test

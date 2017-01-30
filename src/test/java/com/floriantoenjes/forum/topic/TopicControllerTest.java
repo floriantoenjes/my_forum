@@ -128,4 +128,18 @@ public class TopicControllerTest {
         assertEquals(topic.getPosts().get(0).getText(), TEXT);
     }
 
+    @Test
+    public void addTopicWIthoutUserTest() throws Exception {
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(null, null));
+        final String NAME = "Test Topic";
+        final String TEXT = "Test text";
+
+        mockMvc.perform(post("/topics/add")
+                .param("boardId", "1")
+                .param("name", NAME)
+                .param("firstPostText", TEXT))
+
+                .andExpect(redirectedUrl("/boards/1"));
+    }
+
 }

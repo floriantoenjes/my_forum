@@ -1,5 +1,6 @@
 package com.floriantoenjes.forum.post;
 
+import com.floriantoenjes.forum.topic.Topic;
 import com.floriantoenjes.forum.user.Role;
 import com.floriantoenjes.forum.user.User;
 import com.floriantoenjes.forum.user.UserService;
@@ -18,19 +19,22 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 public class PostControllerTest {
+    private final String TEST_TEXT = "Test text.";
+
     private MockMvc mockMvc;
     private User user;
 
     @Mock
-    PostService postService;
+    private PostService postService;
 
     @Mock
-    UserService userService;
+    private UserService userService;
 
     @InjectMocks
     private PostController postController;
@@ -45,8 +49,7 @@ public class PostControllerTest {
 
     @Test
     public void viewPostFormTest() throws Exception {
-        final String TEXT = "Test text.";
-        Post post = new Post(user, TEXT);
+        Post post = createMockPost();
         when(postService.findOne(1L)).thenReturn(post);
 
         mockMvc.perform(get("/posts/1"))
@@ -58,7 +61,19 @@ public class PostControllerTest {
 
     @Test
     public void updatePostTest() throws Exception {
+        when(userService.findByUsername(user.getUsername())).thenReturn(user);
+        Topic topic = new Topic(user, "Test Topic");
+        Post post = createMockPost();
+        topic.addPost(post);
+        when(postService.findOne(1L)).thenReturn(post);
 
+        mockMvc.perform(post("/posts/1")
+                .param("text", TEST_TEXT))
+
+                .andExpect(redirectedUrlPattern("/topics/*"));
     }
 
+    public Post createMockPost() {
+        return new Post(user, TEST_TEXT);
+    }
 }

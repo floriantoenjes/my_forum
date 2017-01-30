@@ -32,8 +32,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Transactional
 public class TopicControllerTest {
-    private MockMvc mockMvc;
+    private final String TEST_POST_TEXT = "Test text";
+    private final String TEST_TOPIC_NAME = "Test Topic";
 
+    private MockMvc mockMvc;
     private User user;
 
     @Autowired
@@ -58,8 +60,8 @@ public class TopicControllerTest {
 
     @Test
     public void viewTopicDetailTest() throws Exception {
-        Topic topic = new Topic(user, "Test Topic");
-        Post post = new Post(user, "Test Post");
+        Topic topic = new Topic(user, TEST_TOPIC_NAME);
+        Post post = new Post(user, TEST_POST_TEXT);
         topic.addPost(post);
         topicService.save(topic);
 
@@ -73,20 +75,19 @@ public class TopicControllerTest {
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     public void addReplyTest() throws Exception {
-        final String TEXT = "Test post";
-        Topic topic = new Topic(user, "Test Topic");
-        Post post = new Post(user, "Test Post");
+        Topic topic = new Topic(user, TEST_TOPIC_NAME);
+        Post post = new Post(user, TEST_POST_TEXT);
         topic.addPost(post);
         topicService.save(topic);
 
         mockMvc.perform(post("/topics/1")
         .param("id" , "")
-        .param("text", TEXT))
+        .param("text", TEST_POST_TEXT))
 
                 .andExpect(redirectedUrl("/topics/1"));
         topic = topicService.findOne(1L);
         post = topic.getPosts().get(topic.getPosts().size() - 1);
-        assertEquals(post.getText(), TEXT);
+        assertEquals(post.getText(), TEST_POST_TEXT);
     }
 
     @Test
@@ -111,33 +112,29 @@ public class TopicControllerTest {
 
     @Test
     public void addTopicTest() throws Exception {
-        final String NAME = "Test Topic";
-        final String TEXT = "Test text";
         Board board = new Board("Test Board");
         boardService.save(board);
 
         mockMvc.perform(post("/topics/add")
                 .param("boardId", "1")
-                .param("name", NAME)
-                .param("firstPostText", TEXT))
+                .param("name", TEST_TOPIC_NAME)
+                .param("firstPostText", TEST_POST_TEXT))
 
                 .andExpect(redirectedUrlPattern("/topics/*"));
         List<Topic> topicList = topicService.findAll();
         Topic topic = topicList.get(topicList.size() - 1);
-        assertEquals(topic.getName(), NAME);
-        assertEquals(topic.getPosts().get(0).getText(), TEXT);
+        assertEquals(topic.getName(), TEST_TOPIC_NAME);
+        assertEquals(topic.getPosts().get(0).getText(), TEST_POST_TEXT);
     }
 
     @Test
     public void addTopicWIthoutUserTest() throws Exception {
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(null, null));
-        final String NAME = "Test Topic";
-        final String TEXT = "Test text";
 
         mockMvc.perform(post("/topics/add")
                 .param("boardId", "1")
-                .param("name", NAME)
-                .param("firstPostText", TEXT))
+                .param("name", TEST_TOPIC_NAME)
+                .param("firstPostText", TEST_POST_TEXT))
 
                 .andExpect(redirectedUrl("/boards/1"));
     }

@@ -26,7 +26,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 public class PostControllerTest {
     private final String TEST_TEXT = "Test text.";
-
     private MockMvc mockMvc;
     private User user;
 

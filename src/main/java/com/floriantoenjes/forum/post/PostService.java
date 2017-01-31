@@ -1,6 +1,8 @@
 package com.floriantoenjes.forum.post;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +14,10 @@ public class PostService {
 
     public List<Post> findAll() {
         return (List<Post>) postRepository.findAll();
+    }
+
+    public Page findAll(Pageable pageable) {
+        return postRepository.findAll(pageable);
     }
 
     public Post findOne(Long id) {

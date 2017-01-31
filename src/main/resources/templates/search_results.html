@@ -14,7 +14,7 @@
     </ul>
     <ul>
         <li th:each="page : ${pages}">
-            <a th:if="!(${currentPage} == ${page})" th:href="@{/search/results} + '?query=' + ${query} + '&page=' + ${page}" th:text="'Page ' + ${page + 1}"></a>
+            <a th:if="!(${currentPage} == ${page})" th:href="@{'/search/results' (query=${query}, page=${page})}" th:text="'Page ' + ${page + 1}"></a>
             <span th:if="${currentPage} == ${page}" th:text="'Page ' + ${page + 1}"></span>
         </li>
     </ul>

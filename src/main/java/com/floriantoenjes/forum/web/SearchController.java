@@ -37,17 +37,17 @@ public class SearchController {
         List<Post> posts = postService.findAll().stream().filter(post -> post.getText().toLowerCase()
                 .contains(query.toLowerCase())).collect(Collectors.toList());
 
-        int startIndex = page * 10;
+        int startIndex = page * PAGE_SIZE;
         int endIndex;
-        if (posts.size() > (page + 1) * 10){
-            endIndex = (page + 1) * 10;
+        if (posts.size() > (page + 1) * PAGE_SIZE){
+            endIndex = (page + 1) * PAGE_SIZE;
         } else {
-            endIndex = startIndex + (posts.size() % 10);
+            endIndex = startIndex + (posts.size() % PAGE_SIZE);
         }
         List<Post> results = posts.subList(startIndex, endIndex);
 
         ArrayList<Integer> pages = new ArrayList<>();
-        IntStream.range(0, (int) Math.ceil(posts.size() / 10.0)).forEach(pages::add);
+        IntStream.range(0, (int) Math.ceil(posts.size() / (double) PAGE_SIZE)).forEach(pages::add);
 
         model.addAttribute("results", results);
         model.addAttribute("query", query);

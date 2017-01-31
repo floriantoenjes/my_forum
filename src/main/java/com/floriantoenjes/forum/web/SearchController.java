@@ -27,11 +27,9 @@ public class SearchController {
     }
 
     @RequestMapping("/results")
-    public String searchResults(@RequestParam String query, @RequestParam(value = "page", required = false) Integer page,
+    public String searchResults(@RequestParam String query,
+                                @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
                                 Model model) {
-        if (page == null) {
-            page = 0;
-        }
         Page<Post> resultPage = postService.findAll(new PageRequest(page, 10));
         List<Post> results = resultPage.getContent().stream().filter(post -> post.getText().toLowerCase()
                 .contains(query.toLowerCase())).collect(Collectors.toList());

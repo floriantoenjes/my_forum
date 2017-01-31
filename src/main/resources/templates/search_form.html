@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xml:ns:th="http://www.thymeleaf.org">
+<head>
+    <title>Forum</title>
+</head>
+<body>
+    <ul th:replace="layout :: nav"></ul>
+    <h1>Forum</h1>
+    <h2>Search</h2>
+    <form th:action="@{/search/results}" method="get">
+        <label for="query">Search:</label>
+        <input type="text" name="query" id="query"/>
+        <button type="submit">Search</button>
+    </form>
+
+</body>
+</html>

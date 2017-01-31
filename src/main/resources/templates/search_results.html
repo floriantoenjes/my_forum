@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xml:ns:th="http://www.thymeleaf.org">
+<head>
+    <title>Forum</title>
+</head>
+<body>
+    <ul th:replace="layout :: nav"></ul>
+    <h1>Forum</h1>
+    <h2>Search Results</h2>
+    <ul>
+        <li th:each="result : ${results}">
+            <p th:text="${result.topic.name}"></p>
+        </li>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xml:ns:th="http://www.thymeleaf.org">
+<head>
+    <title>Forum</title>
+</head>
+<body>
+    <ul th:replace="layout :: nav"></ul>
+    <h1>Forum</h1>
+    <h2>Search Results</h2>
+    <ul>
+        <li th:each="result : ${results}">
+            <p th:text="${result.topic.name}"></p>
+        </li>
+    </ul>
+    <ul>
+        <li th:each="page : ${pages}">
+            <a th:if="!(${currentPage} == ${page})" th:href="@{'/search/results' (query=${query}, page=${page})}" th:text="'Page ' + ${page + 1}"></a>
+            <span th:if="${currentPage} == ${page}" th:text="'Page ' + ${page + 1}"></span>
+        </li>
+    </ul>
+</body>
+</html>

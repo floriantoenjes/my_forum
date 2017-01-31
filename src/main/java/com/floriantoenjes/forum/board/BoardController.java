@@ -1,5 +1,6 @@
 package com.floriantoenjes.forum.board;
 
+import com.floriantoenjes.forum.topic.Topic;
 import com.floriantoenjes.forum.topic.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,13 +30,12 @@ public class BoardController {
     }
 
     @RequestMapping("/{id}")
-    public String board(@PathVariable Long id, @RequestParam(value = "page", required = false) Integer page,  Model model) {
+    public String board(@PathVariable Long id,
+                        @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+                        Model model) {
         Board board = boardService.findOne(id);
-        if (page == null) {
-            page = 0;
-        }
 
-        Page p = topicService.findByBoard(board, new PageRequest(page, 10));
+        Page<Topic> p = topicService.findByBoard(board, new PageRequest(page, 10));
         ArrayList<Integer> pages = new ArrayList<>();
         IntStream.range(0, p.getTotalPages()).forEach(pages::add);
 

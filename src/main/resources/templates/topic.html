@@ -16,6 +16,7 @@
     </ul>
     <form sec:authorize="isAuthenticated()" th:action="@{/topics/} + ${topic.id}" method="post" th:object="${reply}">
         <input type="hidden" th:field="*{id}"/>
+        <label for="text">Quick Reply:</label>
         <textarea th:field="*{text}" rows="5" cols="50"></textarea>
         <button type="submit">Reply</button>
     </form>

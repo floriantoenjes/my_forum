@@ -17,6 +17,8 @@ import java.util.stream.IntStream;
 @Controller
 @RequestMapping("boards")
 public class BoardController {
+    private final int PAGE_SIZE = 10;
+
     @Autowired
     private BoardService boardService;
 
@@ -35,7 +37,7 @@ public class BoardController {
                         Model model) {
         Board board = boardService.findOne(id);
 
-        Page<Topic> p = topicService.findByBoard(board, new PageRequest(page, 10));
+        Page<Topic> p = topicService.findByBoard(board, new PageRequest(page, PAGE_SIZE));
         ArrayList<Integer> pages = new ArrayList<>();
         IntStream.range(0, p.getTotalPages()).forEach(pages::add);
 

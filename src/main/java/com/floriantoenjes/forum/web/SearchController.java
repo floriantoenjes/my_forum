@@ -39,10 +39,13 @@ public class SearchController {
 
         int startIndex = page * PAGE_SIZE;
         int endIndex;
+        // More than fits on to the page? Make it page sized
         if (posts.size() > (page + 1) * PAGE_SIZE){
             endIndex = (page + 1) * PAGE_SIZE;
+        // Same as fits on to the page? Take it's size
         } else if(posts.size() == (page + 1) * PAGE_SIZE) {
             endIndex = posts.size();
+        // Less than fits unto the page? Take the remainder
         } else {
             endIndex = startIndex + (posts.size() % PAGE_SIZE);
         }

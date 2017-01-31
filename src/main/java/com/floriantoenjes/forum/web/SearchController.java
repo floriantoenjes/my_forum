@@ -35,6 +35,7 @@ public class SearchController {
         List<Post> results = resultPage.getContent().stream().filter(post -> post.getText().toLowerCase()
                 .contains(query.toLowerCase())).collect(Collectors.toList());
 
+        // ToDo: Fix the bug regarding empty pages on search
         ArrayList<Integer> pages = new ArrayList<>();
         IntStream.range(0, resultPage.getTotalPages()).forEach(pages::add);
 

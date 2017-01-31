@@ -14,10 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 @Controller
 @RequestMapping("search")
 public class SearchController {
+    private final int PAGE_SIZE = 10;
+
     @Autowired
     private PostService postService;
 
@@ -31,13 +34,20 @@ public class SearchController {
     public String searchResults(@RequestParam String query,
                                 @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
                                 Model model) {
-        Page<Post> resultPage = postService.findAll(new PageRequest(page, 10));
-        List<Post> results = resultPage.getContent().stream().filter(post -> post.getText().toLowerCase()
+        List<Post> posts = postService.findAll().stream().filter(post -> post.getText().toLowerCase()
                 .contains(query.toLowerCase())).collect(Collectors.toList());
 
-        // ToDo: Fix the bug regarding empty pages on search
+        int startIndex = page * 10;
+        int endIndex;
+        if (posts.size() > (page + 1) * 10){
+            endIndex = (page + 1) * 10;
+        } else {
+            endIndex = startIndex + (posts.size() % 10);
+        }
+        List<Post> results = posts.subList(startIndex, endIndex);
+
         ArrayList<Integer> pages = new ArrayList<>();
-        IntStream.range(0, resultPage.getTotalPages()).forEach(pages::add);
+        IntStream.range(0, (int) Math.ceil(posts.size() / 10.0)).forEach(pages::add);
 
         model.addAttribute("results", results);
         model.addAttribute("query", query);

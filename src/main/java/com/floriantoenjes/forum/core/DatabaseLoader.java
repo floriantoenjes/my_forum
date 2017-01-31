@@ -44,9 +44,9 @@ public class DatabaseLoader implements ApplicationRunner {
 
         Topic topic1 = new Topic(user1,"First Topic");
 
-        Post post1 = new Post(user1, LOREM_IPSUM);
+        Post post1 = new Post(user1, "First Post");
 
-        Post post2 = new Post(user2, LOREM_IPSUM);
+        Post post2 = new Post(user2, "Second Post");
 
         board1.addTopic(topic1);
         topic1.addPost(post1);
@@ -66,7 +66,7 @@ public class DatabaseLoader implements ApplicationRunner {
                 "Linux"
         };
 
-        IntStream.range(0, 20)
+        IntStream.range(0, 25)
                 .forEach(i -> {
                     String template = templates[i % templates.length];
                     String buzzword = buzzwords[i % buzzwords.length];

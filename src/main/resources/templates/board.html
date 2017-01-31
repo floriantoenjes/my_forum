@@ -16,7 +16,6 @@
     <ul>
        <li th:each="page : ${pages}">
            <a th:if="!(${currentPage} == ${page})" th:href="@{'/boards/' + ${board.id} (page=${page})}" th:text="'Page ' + ${page + 1}"></a>
-
            <span th:if="${currentPage} == ${page}" th:text="'Page ' + ${page + 1}"></span>
        </li>
     </ul>

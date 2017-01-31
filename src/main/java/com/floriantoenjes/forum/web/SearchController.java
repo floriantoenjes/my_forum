@@ -19,7 +19,7 @@ import java.util.stream.IntStream;
 @RequestMapping("search")
 public class SearchController {
     @Autowired
-    PostService postService;
+    private PostService postService;
 
     @RequestMapping("/form")
     public String searchForm() {
@@ -27,6 +27,7 @@ public class SearchController {
     }
 
     @RequestMapping("/results")
+    @SuppressWarnings("unchecked")
     public String searchResults(@RequestParam String query,
                                 @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
                                 Model model) {

@@ -9,7 +9,7 @@
     <h2>Search Results</h2>
     <ul>
         <li th:each="result : ${results}">
-            <p th:text="${result.topic.name}"></p>
+            <a th:href="@{'/topics/' + ${result.topic.id}}" th:text="${result.topic.name}"></a>
         </li>
     </ul>
     <ul>

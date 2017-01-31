@@ -41,6 +41,8 @@ public class SearchController {
         int endIndex;
         if (posts.size() > (page + 1) * PAGE_SIZE){
             endIndex = (page + 1) * PAGE_SIZE;
+        } else if(posts.size() == (page + 1) * PAGE_SIZE) {
+            endIndex = posts.size();
         } else {
             endIndex = startIndex + (posts.size() % PAGE_SIZE);
         }

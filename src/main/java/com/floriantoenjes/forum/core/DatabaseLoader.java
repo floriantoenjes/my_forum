@@ -66,7 +66,7 @@ public class DatabaseLoader implements ApplicationRunner {
                 "Linux"
         };
 
-        IntStream.range(0, 25)
+        IntStream.range(0, 21)
                 .forEach(i -> {
                     String template = templates[i % templates.length];
                     String buzzword = buzzwords[i % buzzwords.length];

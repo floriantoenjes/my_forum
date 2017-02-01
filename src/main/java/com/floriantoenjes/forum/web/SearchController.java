@@ -37,6 +37,7 @@ public class SearchController {
         List<Post> posts = postService.findAll().stream().filter(post -> post.getText().toLowerCase()
                 .contains(query.toLowerCase())).collect(Collectors.toList());
 
+        // Pagination
         int startIndex = page * PAGE_SIZE;
         int endIndex;
         // More than fits on to the page? Make it page sized
@@ -45,7 +46,7 @@ public class SearchController {
         // Same as fits on to the page? Take it's size
         } else if(posts.size() == (page + 1) * PAGE_SIZE) {
             endIndex = posts.size();
-        // Less than fits unto the page? Take the remainder
+        // Less than fits on to the page? Take the remainder
         } else {
             endIndex = startIndex + (posts.size() % PAGE_SIZE);
         }

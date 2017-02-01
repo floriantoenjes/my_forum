@@ -5,6 +5,7 @@ import com.floriantoenjes.forum.board.BoardService;
 import com.floriantoenjes.forum.post.Post;
 import com.floriantoenjes.forum.user.User;
 import com.floriantoenjes.forum.user.UserService;
+import com.floriantoenjes.forum.web.FlashMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -57,9 +58,7 @@ public class TopicController {
     public String addReply(@PathVariable Long id, Post reply) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
-        if (user == null) {
-            // ToDo: Add Flashmessage
-        } else {
+        if (user != null) {
             reply.setAuthor(user);
             Topic topic = topicService.findOne(id);
             topic.addPost(reply);

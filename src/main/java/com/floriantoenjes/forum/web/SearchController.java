@@ -19,8 +19,6 @@ import java.util.stream.LongStream;
 @Controller
 @RequestMapping("search")
 public class SearchController {
-    private final int PAGE_SIZE = 10;
-
     @Autowired
     private PostService postService;
 
@@ -34,6 +32,8 @@ public class SearchController {
     public String searchResults(@RequestParam String query,
                                 @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
                                 Model model) {
+        final int PAGE_SIZE = 10;
+
         List<Post> posts = postService.findAll().stream().filter(post -> post.getText().toLowerCase()
                 .contains(query.toLowerCase())).collect(Collectors.toList());
 

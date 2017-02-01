@@ -63,7 +63,7 @@ public class SearchControllerTest {
         Post post = new Post(user, "Test query");
         postList.add(post);
         Page<Post> page = new PageImpl<>(postList);
-        when(postService.findAll(new PageRequest(0, 10))).thenReturn(page);
+        when(postService.findAll()).thenReturn(postList);
 
         mockMvc.perform(get("/search/results")
         .param("query", "Test query"))

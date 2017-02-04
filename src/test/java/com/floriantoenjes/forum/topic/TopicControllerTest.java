@@ -13,7 +13,6 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.annotation.DirtiesContext;
@@ -23,7 +22,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.util.NestedServletException;
 
 import javax.transaction.Transactional;
-
 import java.util.List;
 
 import static org.hamcrest.Matchers.any;
@@ -110,8 +108,8 @@ public class TopicControllerTest {
     @Test
     public void newTopicFormWithoutUserTest() throws Exception {
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(null, null));
-        thrown.expectMessage("Bad credentials");
         thrown.expect(NestedServletException.class);
+        thrown.expectMessage("Bad credentials");
 
         mockMvc.perform(get("/topics/add")
                 .param("boardId", "1"));
@@ -138,8 +136,8 @@ public class TopicControllerTest {
     @Test
     public void addTopicWithoutUserTest() throws Exception {
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(null, null));
-        thrown.expectMessage("Bad credentials");
         thrown.expect(NestedServletException.class);
+        thrown.expectMessage("Bad credentials");
 
         mockMvc.perform(post("/topics/add")
                 .param("boardId", "1")

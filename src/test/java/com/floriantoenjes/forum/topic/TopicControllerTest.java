@@ -107,9 +107,7 @@ public class TopicControllerTest {
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(null, null));
 
         mockMvc.perform(get("/topics/add")
-                .param("boardId", "1"))
-
-                .andExpect(redirectedUrl("/boards/1"));
+                .param("boardId", "1"));
     }
 
     @Test
@@ -137,7 +135,6 @@ public class TopicControllerTest {
                 .param("boardId", "1")
                 .param("name", TEST_TOPIC_NAME)
                 .param("firstPostText", TEST_POST_TEXT));
-
     }
 
 }

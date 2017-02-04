@@ -7,6 +7,7 @@ import com.floriantoenjes.forum.user.User;
 import com.floriantoenjes.forum.user.UserService;
 import com.floriantoenjes.forum.web.FlashMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,26 +56,22 @@ public class TopicController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    @Secured("ROLE_USER")
     public String addReply(@PathVariable Long id, Post reply) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
-        if (user != null) {
-            reply.setAuthor(user);
-            Topic topic = topicService.findOne(id);
-            topic.addPost(reply);
-            topicService.save(topic);
-        }
+        reply.setAuthor(user);
+        Topic topic = topicService.findOne(id);
+        topic.addPost(reply);
+        topicService.save(topic);
         return "redirect:/topics/{id}";
     }
 
     @RequestMapping("/add")
+    @Secured("ROLE_USER")
     public String newTopicForm(@RequestParam Long boardId, Model model) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
-        if (user == null) {
-            return String.format("redirect:/boards/%s", boardId);
-        }
-
         Board board = boardService.findOne(boardId);
         model.addAttribute("board", board);
         model.addAttribute("topic", new Topic());
@@ -82,14 +79,11 @@ public class TopicController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @Secured("ROLE_USER")
     public String addTopic(Topic topic, @RequestParam Long boardId, @RequestParam String firstPostText) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
         topic.setAuthor(user);
-        if (user == null) {
-            return String.format("redirect:/boards/%s", boardId);
-        }
-
         boardService.findOne(boardId).addTopic(topic);
         Post post = new Post();
         post.setAuthor(user);

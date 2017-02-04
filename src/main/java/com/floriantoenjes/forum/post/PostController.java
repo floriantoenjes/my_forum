@@ -3,6 +3,7 @@ package com.floriantoenjes.forum.post;
 import com.floriantoenjes.forum.user.User;
 import com.floriantoenjes.forum.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +30,7 @@ public class PostController {
     }
 
     @RequestMapping(value = "/{id}" ,method = RequestMethod.POST)
+    @Secured("ROLE_USER")
     public String updatePost(@PathVariable Long id, @RequestParam String text) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);

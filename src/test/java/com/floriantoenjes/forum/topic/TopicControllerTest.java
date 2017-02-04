@@ -7,7 +7,9 @@ import com.floriantoenjes.forum.user.Role;
 import com.floriantoenjes.forum.user.User;
 import com.floriantoenjes.forum.user.UserService;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -51,6 +53,9 @@ public class TopicControllerTest {
 
     @Autowired
     private TopicController topicController;
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
@@ -102,12 +107,15 @@ public class TopicControllerTest {
 
     }
 
-    @Test(expected = NestedServletException.class)
+    @Test
     public void newTopicFormWithoutUserTest() throws Exception {
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(null, null));
+        thrown.expectMessage("Bad credentials");
+        thrown.expect(NestedServletException.class);
 
         mockMvc.perform(get("/topics/add")
                 .param("boardId", "1"));
+
     }
 
     @Test
@@ -127,9 +135,11 @@ public class TopicControllerTest {
         assertEquals(topic.getPosts().get(0).getText(), TEST_POST_TEXT);
     }
 
-    @Test(expected = NestedServletException.class)
+    @Test
     public void addTopicWithoutUserTest() throws Exception {
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(null, null));
+        thrown.expectMessage("Bad credentials");
+        thrown.expect(NestedServletException.class);
 
         mockMvc.perform(post("/topics/add")
                 .param("boardId", "1")

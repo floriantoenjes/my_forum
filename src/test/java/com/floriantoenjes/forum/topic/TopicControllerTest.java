@@ -11,12 +11,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.util.NestedServletException;
 
 import javax.transaction.Transactional;
 
@@ -54,7 +56,7 @@ public class TopicControllerTest {
     public void setUp() throws Exception {
         user = new User("test_user", "password", new Role("ROLE_USER"));
         userService.save(user);
-        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(user, null));
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(user,  null, user.getAuthorities()));
         mockMvc = MockMvcBuilders.standaloneSetup(topicController).build();
     }
 
@@ -100,7 +102,7 @@ public class TopicControllerTest {
 
     }
 
-    @Test
+    @Test(expected = NestedServletException.class)
     public void newTopicFormWithoutUserTest() throws Exception {
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(null, null));
 
@@ -127,16 +129,15 @@ public class TopicControllerTest {
         assertEquals(topic.getPosts().get(0).getText(), TEST_POST_TEXT);
     }
 
-    @Test
-    public void addTopicWIthoutUserTest() throws Exception {
+    @Test(expected = NestedServletException.class)
+    public void addTopicWithoutUserTest() throws Exception {
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(null, null));
 
         mockMvc.perform(post("/topics/add")
                 .param("boardId", "1")
                 .param("name", TEST_TOPIC_NAME)
-                .param("firstPostText", TEST_POST_TEXT))
+                .param("firstPostText", TEST_POST_TEXT));
 
-                .andExpect(redirectedUrl("/boards/1"));
     }
 
 }

@@ -33,9 +33,7 @@ public class PostController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
         Post post = postService.findOne(id);
-        if (user != post.getAuthor()) {
-            // ToDo: Add Flashmessage
-        } else {
+        if (user == post.getAuthor()) {
             post.setText(text);
             postService.save(post);
         }

@@ -26,7 +26,6 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("topics")
-//@Transactional
 public class TopicController {
 
     @Autowired
@@ -77,7 +76,6 @@ public class TopicController {
 
         validator.validate(reply, result);
         if (result.hasErrors()) {
-            System.out.println("error");
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.reply", result);
             redirectAttributes.addFlashAttribute("reply", reply);
         } else {

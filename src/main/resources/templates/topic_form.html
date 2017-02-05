@@ -2,6 +2,7 @@
 <html xml:ns:th="http://www.thymeleaf.org">
 <head>
     <title>Forum</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
 </head>
 <body>
     <ul th:replace="layout :: nav"></ul>
@@ -14,7 +15,8 @@
         <div>
             <label for="name">Title:</label>
             <br/>
-            <input type="text" th:field="*{name}"/>
+            <input type="text" th:classappend="${#fields.hasErrors('name')}? 'error' : ''" th:field="*{name}"/>
+            <div class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
         </div>
 
         <div>

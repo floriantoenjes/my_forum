@@ -91,13 +91,16 @@ public class TopicController {
         User user = userService.findByUsername(username);
         Board board = boardService.findOne(boardId);
         model.addAttribute("board", board);
-        model.addAttribute("topic", new Topic());
+        if (!model.containsAttribute("topic")) {
+            model.addAttribute("topic", new Topic());
+        }
         return "topic_form";
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @Secured("ROLE_USER")
-    public String addTopic(Topic topic, @RequestParam Long boardId, @RequestParam String firstPostText, BindingResult result) {
+    public String addTopic(Topic topic, @RequestParam Long boardId, @RequestParam String firstPostText, BindingResult result,
+                           RedirectAttributes redirectAttributes) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
         topic.setAuthor(user);
@@ -110,6 +113,12 @@ public class TopicController {
         post.setText(firstPostText);
         topic.addPost(post);
         validator.validate(post, result);
+
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.topic", result);
+            redirectAttributes.addFlashAttribute("topic", topic);
+            return String.format("redirect:/topics/add?boardId=%s", boardId);
+        }
 
         topicService.save(topic);
         return String.format("redirect:/topics/%s", topic.getId());

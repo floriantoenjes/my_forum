@@ -11,12 +11,15 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -33,6 +36,9 @@ public class TopicController {
 
     @Autowired
     private BoardService boardService;
+
+    @Autowired
+    private Validator validator;
 
     @RequestMapping("/{id}")
     public String topic(@PathVariable Long id, Model model) {
@@ -57,12 +63,15 @@ public class TopicController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     @Secured("ROLE_USER")
-    public String addReply(@PathVariable Long id, Post reply) {
+    public String addReply(@PathVariable Long id, Post reply, BindingResult result) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
         reply.setAuthor(user);
+
         Topic topic = topicService.findOne(id);
         topic.addPost(reply);
+
+        validator.validate(reply, result);
         topicService.save(topic);
         return "redirect:/topics/{id}";
     }
@@ -80,16 +89,20 @@ public class TopicController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @Secured("ROLE_USER")
-    public String addTopic(Topic topic, @RequestParam Long boardId, @RequestParam String firstPostText) {
+    public String addTopic(Topic topic, @RequestParam Long boardId, @RequestParam String firstPostText, BindingResult result) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
         topic.setAuthor(user);
+
         boardService.findOne(boardId).addTopic(topic);
+        validator.validate(topic, result);
+
         Post post = new Post();
         post.setAuthor(user);
         post.setText(firstPostText);
         topic.addPost(post);
-        topic.setAuthor(user);
+        validator.validate(post, result);
+
         topicService.save(topic);
         return String.format("redirect:/topics/%s", topic.getId());
     }

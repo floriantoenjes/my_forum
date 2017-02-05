@@ -15,7 +15,7 @@
         <div>
             <label for="name">Title:</label>
             <br/>
-            <input type="text" th:classappend="${#fields.hasErrors('name')}? 'error' : ''" th:field="*{name}"/>
+            <input type="text" th:errorclass="error" th:field="*{name}"/>
             <div class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
         </div>
 

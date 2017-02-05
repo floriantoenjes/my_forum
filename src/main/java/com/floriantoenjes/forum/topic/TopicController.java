@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -25,7 +26,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("topics")
-@Transactional
+//@Transactional
 public class TopicController {
 
     @Autowired
@@ -57,13 +58,16 @@ public class TopicController {
 
         model.addAttribute("topic", topic);
         model.addAttribute("postMap", postMap);
-        model.addAttribute("reply", new Post());
+        if (!model.containsAttribute("reply")) {
+            model.addAttribute("reply", new Post());
+        }
         return "topic";
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     @Secured("ROLE_USER")
-    public String addReply(@PathVariable Long id, Post reply, BindingResult result) {
+    public String addReply(@PathVariable Long id, Post reply, BindingResult result,
+                           RedirectAttributes redirectAttributes) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
         reply.setAuthor(user);
@@ -72,7 +76,13 @@ public class TopicController {
         topic.addPost(reply);
 
         validator.validate(reply, result);
-        topicService.save(topic);
+        if (result.hasErrors()) {
+            System.out.println("error");
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.reply", result);
+            redirectAttributes.addFlashAttribute("reply", reply);
+        } else {
+            topicService.save(topic);
+        }
         return "redirect:/topics/{id}";
     }
 

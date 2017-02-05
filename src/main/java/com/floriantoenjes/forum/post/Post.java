@@ -6,18 +6,21 @@ import com.floriantoenjes.forum.user.User;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
 public class Post extends BaseEntity {
     @ManyToOne
+    @NotNull
     private User author;
 
-    @Size(max = 500)
+    @Size(min = 3, max = 500)
     private String text;
 
     @ManyToOne
-    Topic topic;
+    @NotNull
+    private Topic topic;
 
     public Post() {
 

@@ -6,11 +6,13 @@ import com.floriantoenjes.forum.topic.Topic;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Board extends BaseEntity {
+    @Size(min = 3, max = 50)
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL)

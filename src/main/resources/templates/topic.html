@@ -2,6 +2,7 @@
 <html xml:ns:th="http://www.thymeleaf.org">
 <head>
     <title>Forum</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
 </head>
 <body>
     <ul th:replace="layout :: nav"></ul>
@@ -17,7 +18,8 @@
     <form sec:authorize="isAuthenticated()" th:action="@{/topics/} + ${topic.id}" method="post" th:object="${reply}">
         <input type="hidden" th:field="*{id}"/>
         <label for="text">Quick Reply:</label>
-        <textarea th:field="*{text}" rows="5" cols="50"></textarea>
+        <textarea th:field="*{text}" th:errorclass="error" rows="5" cols="50"></textarea>
+        <div class="error-message" th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></div>
         <button type="submit">Reply</button>
     </form>
 </body>

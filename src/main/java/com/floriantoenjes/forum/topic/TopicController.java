@@ -120,6 +120,8 @@ public class TopicController {
         validator.validate(post, result);
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("firstPostTextError", true);
+            redirectAttributes.addFlashAttribute("firstPostTextErrorMessage",
+                    result.getFieldError("text").getDefaultMessage());
             redirectAttributes.addFlashAttribute("topic", topic);
             return String.format("redirect:/topics/add?boardId=%s", boardId);
         }

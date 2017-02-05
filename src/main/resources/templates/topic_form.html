@@ -23,6 +23,7 @@
             <label for="firstPost">Message: </label>
             <br/>
             <textarea id="firstPost" name="firstPostText"  th:classappend="${firstPostTextError} ? 'error' : ''" rows="10" cols="50"></textarea>
+            <div class="error-message" th:if="${firstPostTextError}" th:text="${firstPostTextErrorMessage}"></div>
         </div>
 
         <button type="submit">Reply</button>

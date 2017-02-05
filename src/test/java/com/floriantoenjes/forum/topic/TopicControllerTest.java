@@ -37,6 +37,7 @@ public class TopicControllerTest {
     private final String TEST_POST_TEXT = "Test text";
     private final String TEST_TOPIC_NAME = "Test Topic";
 
+    private Board board;
     private MockMvc mockMvc;
     private User user;
 
@@ -59,6 +60,8 @@ public class TopicControllerTest {
     public void setUp() throws Exception {
         user = new User("test_user", "password", new Role("ROLE_USER"));
         userService.save(user);
+        board = new Board("Test board");
+        boardService.save(board);
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(user,  null, user.getAuthorities()));
         mockMvc = MockMvcBuilders.standaloneSetup(topicController).build();
     }
@@ -68,6 +71,7 @@ public class TopicControllerTest {
         Topic topic = new Topic(user, TEST_TOPIC_NAME);
         Post post = new Post(user, TEST_POST_TEXT);
         topic.addPost(post);
+        board.addTopic(topic);
         topicService.save(topic);
 
         mockMvc.perform(get("/topics/1"))
@@ -83,6 +87,7 @@ public class TopicControllerTest {
         Topic topic = new Topic(user, TEST_TOPIC_NAME);
         Post post = new Post(user, TEST_POST_TEXT);
         topic.addPost(post);
+        board.addTopic(topic);
         topicService.save(topic);
 
         mockMvc.perform(post("/topics/1")

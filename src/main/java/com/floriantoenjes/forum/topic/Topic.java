@@ -9,20 +9,25 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Topic extends BaseEntity {
+    @Size(min = 5, max = 50)
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Post> posts;
 
     @ManyToOne
+    @NotNull
     private User author;
 
     @ManyToOne
+    @NotNull
     private Board board;
 
     public Topic() {

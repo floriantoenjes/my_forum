@@ -22,7 +22,7 @@
         <div>
             <label for="firstPost">Message: </label>
             <br/>
-            <textarea id="firstPost" name="firstPostText" rows="10" cols="50"></textarea>
+            <textarea id="firstPost" name="firstPostText"  th:classappend="${firstPostTextError} ? 'error' : ''" rows="10" cols="50"></textarea>
         </div>
 
         <button type="submit">Reply</button>

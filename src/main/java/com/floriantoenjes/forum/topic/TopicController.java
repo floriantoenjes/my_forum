@@ -107,15 +107,19 @@ public class TopicController {
 
         boardService.findOne(boardId).addTopic(topic);
         validator.validate(topic, result);
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.topic", result);
+            redirectAttributes.addFlashAttribute("topic", topic);
+            return String.format("redirect:/topics/add?boardId=%s", boardId);
+        }
 
         Post post = new Post();
         post.setAuthor(user);
         post.setText(firstPostText);
         topic.addPost(post);
         validator.validate(post, result);
-
         if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.topic", result);
+            redirectAttributes.addFlashAttribute("firstPostTextError", true);
             redirectAttributes.addFlashAttribute("topic", topic);
             return String.format("redirect:/topics/add?boardId=%s", boardId);
         }

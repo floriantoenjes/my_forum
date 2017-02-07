@@ -5,7 +5,6 @@ import com.floriantoenjes.forum.board.BoardService;
 import com.floriantoenjes.forum.post.Post;
 import com.floriantoenjes.forum.user.User;
 import com.floriantoenjes.forum.user.UserService;
-import com.floriantoenjes.forum.web.FlashMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.transaction.Transactional;
-import javax.validation.Valid;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

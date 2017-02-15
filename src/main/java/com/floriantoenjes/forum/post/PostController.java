@@ -31,8 +31,10 @@ public class PostController {
 
     @RequestMapping("/{id}")
     public String postForm(@PathVariable Long id, Model model) {
-        Post post = postService.findOne(id);
-        model.addAttribute("post", post);
+        if (!model.containsAttribute("post")) {
+            Post post = postService.findOne(id);
+            model.addAttribute("post", post);
+        }
         return "post_form";
     }
 
@@ -44,15 +46,15 @@ public class PostController {
         User user = userService.findByUsername(username);
         post = postService.findOne(id);
 
-        // ToDo: Add post validation here
         if (user == post.getAuthor()) {
             post.setText(text);
             validator.validate(post, result);
             if (result.hasErrors()) {
                 redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.post", result);
-            } else {
-                postService.save(post);
+                redirectAttributes.addFlashAttribute("post", post);
+                return "redirect:/posts/{id}";
             }
+            postService.save(post);
         }
 
         return String.format("redirect:/topics/%s", post.getTopic().getId());

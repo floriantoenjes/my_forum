@@ -2,12 +2,14 @@
 <html xml:ns:th="http://www.thymeleaf.org">
 <head>
     <title>Forum</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
 </head>
 <body>
     <ul th:replace="layout :: nav"></ul>
     <h1>Forum</h1>
-    <form th:action="@{/posts/} + ${post.id}" method="post">
-        <textarea name="text" th:text="${post.text}" rows="10" cols="50"></textarea>
+    <form th:action="@{/posts/} + ${post.id}" method="post" th:object="${post}">
+        <textarea name="text" th:errorclass="error" th:text="${post.text}" rows="10" cols="50"></textarea>
+        <div class="error-message" th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></div>
         <button type="submit">Update post</button>
     </form>
 </body>

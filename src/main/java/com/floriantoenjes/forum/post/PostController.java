@@ -27,7 +27,7 @@ public class PostController {
     private UserService userService;
 
     @Autowired
-    Validator validator;
+    private Validator validator;
 
     @RequestMapping("/{id}")
     public String postForm(@PathVariable Long id, Model model) {

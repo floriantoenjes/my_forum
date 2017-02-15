@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.validation.Validator;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -35,6 +36,9 @@ public class PostControllerTest {
 
     @Mock
     private UserService userService;
+
+    @Mock
+    private Validator validator;
 
     @InjectMocks
     private PostController postController;
@@ -72,6 +76,8 @@ public class PostControllerTest {
 
                 .andExpect(redirectedUrlPattern("/topics/*"));
     }
+
+    // ToDo: Write a test for failed post validation
 
     public Post createMockPost() {
         return new Post(user, TEST_TEXT);

@@ -66,7 +66,7 @@ public class PostControllerTest {
         Post post = createMockPost();
         topic.addPost(post);
         when(postService.findOne(1L)).thenReturn(post);
-
+        // ToDo: Fix the updatePost test
         mockMvc.perform(post("/posts/1")
                 .param("text", TEST_TEXT))
 

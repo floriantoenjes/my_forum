@@ -104,4 +104,11 @@ public class User extends BaseEntity implements UserDetails {
         this.posts = posts;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }

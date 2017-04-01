@@ -39,12 +39,14 @@ public class UserController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(User user, @RequestParam String password2, BindingResult result) {
+    public String register(User user, @RequestParam String passwordAgain, BindingResult result) {
         user.setRole(new Role("ROLE_USER"));
         validator.validate(user, result);
         if (result.hasErrors()) {
             return "redirect:/register";
-        }else if (userService.findByUsername(user.getUsername()) != null) {
+        } else if (userService.findByUsername(user.getUsername()) != null) {
+            return "redirect:/register";
+        } else if (!user.getPassword().equals(passwordAgain)) {
             return "redirect:/register";
         }
         userService.save(user);

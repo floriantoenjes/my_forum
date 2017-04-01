@@ -46,7 +46,7 @@ public class SearchController {
         }
         List<Post> results = posts.subList(startIndex, endIndex);
 
-        ArrayList<Integer> pages = new ArrayList<>();
+        List<Integer> pages = new ArrayList<>();
         IntStream.range(0, (int) Math.ceil(posts.size() / (double) PAGE_SIZE)).forEach(pages::add);
 
         model.addAttribute("results", results);

@@ -5,3 +5,4 @@ This forum consists of different boards in which users can create topics and wri
 authenticated if they want to write to the boards.
 
 Forum input is being validated and tests are written to ensure the application is working correctly.
+The boards offer pagination for topics and a search function.

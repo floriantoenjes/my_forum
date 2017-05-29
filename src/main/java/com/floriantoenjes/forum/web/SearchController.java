@@ -42,7 +42,7 @@ public class SearchController {
 
                 if (matcher.find()) {
                     if (matcher.group().length() != post.getText().length()) {
-                        post.setText(matcher.group() + "...");
+                        post.setText("..." + matcher.group() + "...");
                     }
                 }
 

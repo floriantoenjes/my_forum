@@ -18,7 +18,8 @@
         <div class="error-message" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
 
 
-        <input name="passwordAgain" placeholder="Retype your password" type="password"/>
+        <input name="passwordAgain" th:classappend="${passwordConfirmationError} ? 'error' : ''" placeholder="Retype your password" type="password"/>
+        <div class="error-message" th:if="${passwordConfirmationError}" th:text="${passwordConfirmationErrorMessage}"></div>
         <button type="submit">Login</button>
     </form>
 </body>

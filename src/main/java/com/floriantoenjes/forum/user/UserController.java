@@ -52,8 +52,12 @@ public class UserController {
         } else if (userService.findByUsername(user.getUsername()) != null) {
             redirectAttributes.addFlashAttribute("userExistsError", "true");
             redirectAttributes.addFlashAttribute("userExistsErrorMessage", "user already exists");
+            redirectAttributes.addFlashAttribute("user", user);
+
             return "redirect:/register";
         } else if (!user.getPassword().equals(passwordAgain)) {
+            redirectAttributes.addFlashAttribute("passwordConfirmationError", "true");
+            redirectAttributes.addFlashAttribute("passwordConfirmationErrorMessage", "the passwords have to match");
             return "redirect:/register";
         }
         userService.save(user);

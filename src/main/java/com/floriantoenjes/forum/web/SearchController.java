@@ -37,7 +37,7 @@ public class SearchController {
         List<Post> posts = new ArrayList<>();
         for (Post post : postService.findAll()) {
             if (post.getText().toLowerCase().contains(query.toLowerCase())) {
-                Pattern pattern = Pattern.compile(String.format("(.{0,25}%s.{0,25})", query));
+                Pattern pattern = Pattern.compile(String.format("(.{0,%d}%s.{0,%d})", TEXT_LENGTH / 2, query, TEXT_LENGTH / 2));
                 Matcher matcher = pattern.matcher(post.getText());
 
                 if (matcher.find()) {

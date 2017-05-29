@@ -50,6 +50,8 @@ public class UserController {
             redirectAttributes.addFlashAttribute("user", user);
             return "redirect:/register";
         } else if (userService.findByUsername(user.getUsername()) != null) {
+            redirectAttributes.addFlashAttribute("userExistsError", "true");
+            redirectAttributes.addFlashAttribute("userExistsErrorMessage", "user already exists");
             return "redirect:/register";
         } else if (!user.getPassword().equals(passwordAgain)) {
             return "redirect:/register";

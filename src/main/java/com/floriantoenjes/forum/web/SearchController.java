@@ -30,9 +30,17 @@ public class SearchController {
                                 @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
                                 Model model) {
         final int PAGE_SIZE = 10;
+        final int TEXT_LENGTH = 50;
 
-        List<Post> posts = postService.findAll().stream().filter(post -> post.getText().toLowerCase()
-                .contains(query.toLowerCase())).collect(Collectors.toList());
+        List<Post> posts = new ArrayList<>();
+        for (Post post : postService.findAll()) {
+            if (post.getText().toLowerCase().contains(query.toLowerCase())) {
+                if (!(post.getText().length() < TEXT_LENGTH)) {
+                    post.setText(post.getText().substring(0, TEXT_LENGTH));
+                }
+                posts.add(post);
+            }
+        }
 
         // Pagination
         int startIndex = page * PAGE_SIZE;

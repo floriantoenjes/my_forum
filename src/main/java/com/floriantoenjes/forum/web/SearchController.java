@@ -41,7 +41,9 @@ public class SearchController {
                 Matcher matcher = pattern.matcher(post.getText());
 
                 if (matcher.find()) {
-                    post.setText(matcher.group());
+                    if (matcher.group().length() != post.getText().length()) {
+                        post.setText(matcher.group() + "...");
+                    }
                 }
 
                 posts.add(post);

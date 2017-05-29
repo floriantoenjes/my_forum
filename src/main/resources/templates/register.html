@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Forum</title>
+</head>
+<body>
+    <ul th:replace="layout :: nav"></ul>
+    <h1>Forum</h1>
+    <h3>Register</h3>
+    <form th:action="@{/register}" method="post" th:object="${user}">
+        <input th:field="*{username}" placeholder="Username"/>
+        <input th:field="*{password}" placeholder="Password" type="password"/>
+        <input name="passwordAgain" placeholder="Retype your password" type="password"/>
+        <button type="submit">Login</button>
+    </form>
+</body>
+</html>

@@ -17,7 +17,6 @@ import java.util.stream.IntStream;
 @Controller
 @RequestMapping("boards")
 public class BoardController {
-    private final int PAGE_SIZE = 10;
 
     @Autowired
     private BoardService boardService;
@@ -35,6 +34,7 @@ public class BoardController {
     public String board(@PathVariable Long id,
                         @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
                         Model model) {
+        final int PAGE_SIZE = 10;
         Board board = boardService.findOne(id);
 
         Page<Topic> p = topicService.findByBoard(board, new PageRequest(page, PAGE_SIZE));

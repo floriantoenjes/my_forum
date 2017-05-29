@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -35,9 +37,13 @@ public class SearchController {
         List<Post> posts = new ArrayList<>();
         for (Post post : postService.findAll()) {
             if (post.getText().toLowerCase().contains(query.toLowerCase())) {
-                if (!(post.getText().length() < TEXT_LENGTH)) {
-                    post.setText(post.getText().substring(0, TEXT_LENGTH));
+                Pattern pattern = Pattern.compile("(.{0,50}diam.{0,50})");
+                Matcher matcher = pattern.matcher(post.getText());
+
+                if (matcher.find()) {
+                    post.setText(matcher.group());
                 }
+
                 posts.add(post);
             }
         }

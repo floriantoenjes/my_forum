@@ -58,6 +58,8 @@ public class UserController {
         } else if (!user.getPassword().equals(passwordAgain)) {
             redirectAttributes.addFlashAttribute("passwordConfirmationError", "true");
             redirectAttributes.addFlashAttribute("passwordConfirmationErrorMessage", "the passwords have to match");
+            redirectAttributes.addFlashAttribute("user", user);
+
             return "redirect:/register";
         }
         userService.save(user);

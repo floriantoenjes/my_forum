@@ -11,7 +11,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -29,6 +31,9 @@ public class Topic extends BaseEntity {
     @ManyToOne
     @NotNull
     private Board board;
+
+    @NotNull
+    private Date date = new Date();
 
     public Topic() {
         this.posts = new ArrayList<>();
@@ -75,5 +80,13 @@ public class Topic extends BaseEntity {
     public boolean addPost(Post post) {
         post.setTopic(this);
         return posts.add(post);
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

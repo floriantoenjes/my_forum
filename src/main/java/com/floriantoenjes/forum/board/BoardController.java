@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.IntStream;
 
 @Controller
@@ -42,8 +44,11 @@ public class BoardController {
         ArrayList<Integer> pages = new ArrayList<>();
         IntStream.range(0, p.getTotalPages()).forEach(pages::add);
 
+        List<Topic> topics = new ArrayList<>(p.getContent());
+        topics.sort(Comparator.comparing(topic -> topic.getDate()));
+
         model.addAttribute("board", board);
-        model.addAttribute("topics", p.getContent());
+        model.addAttribute("topics", topics);
         model.addAttribute("pages", pages);
         model.addAttribute("currentPage", page);
         return "board";

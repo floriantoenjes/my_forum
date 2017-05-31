@@ -8,6 +8,7 @@
     <ul>
         <li th:each="postEntry : ${postMap}">
             <p th:text="'Author: ' + ${postEntry.key.author.username}"></p>
+            <p th:text="'at ' + ${postEntry.key.date}"></p>
             <p th:text="${postEntry.key.text}"></p>
             <a th:if="${postEntry.value}" th:href="@{/posts/} + ${postEntry.key.id}">Edit</a>
         </li>

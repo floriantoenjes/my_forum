@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 @Entity
 public class Post extends BaseEntity {
@@ -21,6 +22,9 @@ public class Post extends BaseEntity {
     @ManyToOne
     @NotNull
     private Topic topic;
+
+    @NotNull
+    Date date = new Date();
 
     public Post() {
 
@@ -55,5 +59,11 @@ public class Post extends BaseEntity {
         this.topic = topic;
     }
 
+    public Date getDate() {
+        return date;
+    }
 
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }

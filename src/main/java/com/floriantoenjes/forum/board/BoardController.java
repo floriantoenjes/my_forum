@@ -40,7 +40,10 @@ public class BoardController {
 
         Page<Topic> p = topicService.findByBoardOrderByDateDesc(board, new PageRequest(page, PAGE_SIZE));
         ArrayList<Integer> pages = new ArrayList<>();
-        IntStream.range(0, p.getTotalPages()).forEach(pages::add);
+        IntStream
+                .range(0,
+                        p.getTotalPages())
+                .forEach(pages::add);
 
         model.addAttribute("board", board);
         model.addAttribute("topics", p.getContent());

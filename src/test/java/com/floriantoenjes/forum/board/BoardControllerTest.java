@@ -64,7 +64,7 @@ public class BoardControllerTest {
         Topic topic = new Topic(new User("user", "password", new Role("ROLE_USER")), "Test Topic");
         List<Topic> topicList = new ArrayList<>();
         topicList.add(topic);
-        when(topicService.findByBoard(board, new PageRequest(0, 10)))
+        when(topicService.findByBoardOrderByDateDesc(board, new PageRequest(0, 10)))
                 .thenReturn(new PageImpl<>(topicList));
 
 

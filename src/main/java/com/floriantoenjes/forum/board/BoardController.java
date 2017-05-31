@@ -38,7 +38,7 @@ public class BoardController {
         final int PAGE_SIZE = 10;
         Board board = boardService.findOne(id);
 
-        Page<Topic> p = topicService.findByBoard(board, new PageRequest(page, PAGE_SIZE));
+        Page<Topic> p = topicService.findByBoardOrderByDateDesc(board, new PageRequest(page, PAGE_SIZE));
         ArrayList<Integer> pages = new ArrayList<>();
         IntStream.range(0, p.getTotalPages()).forEach(pages::add);
 

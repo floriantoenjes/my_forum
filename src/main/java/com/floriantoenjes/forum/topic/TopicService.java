@@ -33,4 +33,8 @@ public class TopicService {
     public Page<Topic> findByBoard(Board board, Pageable pageable) {
         return topicRepository.findByBoard(board, pageable);
     }
+
+    public Page<Topic> findByBoardOrderByDateDesc(Board board, Pageable pageable) {
+        return topicRepository.findByBoardOrderByDateDesc(board, pageable);
+    }
 }

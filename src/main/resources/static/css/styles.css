@@ -1,3 +1,7 @@
+body {
+    font-family: Sans-serif;
+}
+
 .error {
         background-color: #ac4343;
         color: white;

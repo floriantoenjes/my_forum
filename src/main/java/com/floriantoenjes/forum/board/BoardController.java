@@ -30,6 +30,7 @@ public class BoardController {
         return "index";
     }
 
+    // ToDo: Sort the topics by date
     @RequestMapping("/{id}")
     public String board(@PathVariable Long id,
                         @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,

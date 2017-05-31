@@ -29,8 +29,8 @@ public class SearchController {
     @RequestMapping("/results")
     @SuppressWarnings("unchecked")
     public String searchResults(@RequestParam String query,
-                                @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
-                                Model model) {
+                                @RequestParam(value = "page", required = false, defaultValue = "0")
+                                        Integer page, Model model) {
         final int PAGE_SIZE = 10;
         final int TEXT_LENGTH = 50;
 
@@ -45,7 +45,6 @@ public class SearchController {
                         post.setText("..." + matcher.group() + "...");
                     }
                 }
-
                 posts.add(post);
             }
         }
@@ -53,10 +52,12 @@ public class SearchController {
         // Pagination
         int startIndex = page * PAGE_SIZE;
         int endIndex;
+
         // More or same than fits on to the page? Make it page sized
         if (posts.size() >= (page + 1) * PAGE_SIZE) {
             endIndex = (page + 1) * PAGE_SIZE;
-        // Less than fits on to the page? Take the remainder
+
+            // Less than fits on to the page? Take the remainder
         } else {
             endIndex = startIndex + (posts.size() % PAGE_SIZE);
         }
@@ -69,6 +70,7 @@ public class SearchController {
         model.addAttribute("query", query);
         model.addAttribute("pages", pages);
         model.addAttribute("currentPage", page);
+
         return "search_results";
     }
 }

@@ -1,5 +1,6 @@
 package com.floriantoenjes.forum.post;
 
+import com.floriantoenjes.forum.file.StorageService;
 import com.floriantoenjes.forum.user.User;
 import com.floriantoenjes.forum.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,11 @@ public class PostController {
     @Autowired
     private Validator validator;
 
+    @Autowired
+    private StorageService storageService;
+
     @RequestMapping("/{id}")
+
     public String postForm(@PathVariable Long id, Model model) {
         if (!model.containsAttribute("post")) {
             Post post = postService.findOne(id);
@@ -58,6 +63,7 @@ public class PostController {
                 return "redirect:/posts/{id}";
             }
             postService.save(post);
+            storageService.store(file);
         }
 
         return String.format("redirect:/topics/%s", post.getTopic().getId());

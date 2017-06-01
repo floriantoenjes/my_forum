@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -40,8 +41,10 @@ public class PostController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     @Secured("ROLE_USER")
-    public String updatePost(@PathVariable Long id, @RequestParam String text, Post post, BindingResult result,
-                             RedirectAttributes redirectAttributes) {
+    public String updatePost(@PathVariable Long id, @RequestParam String text, Post post,
+                             @RequestParam MultipartFile file,
+                             BindingResult result, RedirectAttributes redirectAttributes) {
+
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
         post = postService.findOne(id);

@@ -32,15 +32,20 @@ public class FileSystemStorageService implements StorageService {
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
             }
-            String filenameWithDatetime = file.getOriginalFilename() + new Date().toString();
-            String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-            String encodedFilename = Integer.toString(filenameWithDatetime.hashCode()) + "." + extension;
 
+            String encodedFilename = encodeFilename(file.getOriginalFilename());
             Files.copy(file.getInputStream(), this.rootLocation.resolve(encodedFilename));
             return encodedFilename;
         } catch (IOException e) {
             throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
         }
+    }
+
+    private String encodeFilename(String filename) {
+        String filenameWithDatetime = filename + new Date().toString();
+        String extension = FilenameUtils.getExtension(filename);
+        return Integer.toString(filenameWithDatetime.hashCode()) + "." + extension;
+
     }
 
     @Override

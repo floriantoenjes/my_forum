@@ -56,6 +56,7 @@ public class PostController {
 
         if (user == post.getAuthor()) {
             post.setText(text);
+            post.addImage(file.getOriginalFilename());
             validator.validate(post, result);
             if (result.hasErrors()) {
                 redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.post", result);

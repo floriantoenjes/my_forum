@@ -63,6 +63,11 @@ public class PostController {
                     // ToDo: Add validation to the few if file is not an image
                     if (ImageIO.read(file.getInputStream()) != null) {
                         post.addImage(storageService.store(file));
+                    } else {
+                        redirectAttributes.addFlashAttribute("imageUploadError", true);
+                        redirectAttributes.addFlashAttribute("imageUploadErrorMessage",
+                                "You can only upload images");
+                        return "redirect:/posts/{id}";
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

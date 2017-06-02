@@ -7,7 +7,8 @@
     <form th:action="@{/posts/} + ${post.id}" method="post" th:object="${post}" enctype="multipart/form-data">
         <textarea name="text" th:errorclass="error" th:text="${post.text}" rows="10" cols="50"></textarea>
         <div class="error-message" th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></div>
-        <input type="file" name="file"/>
+        <label for="file">Upload an image:</label>
+        <input type="file" name="file" id="file"/>
         <button type="submit">Update post</button>
     </form>
     <p th:each="image : ${images}">

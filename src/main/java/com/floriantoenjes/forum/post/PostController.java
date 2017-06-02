@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.imageio.ImageIO;
+import java.io.IOException;
+
 @Controller
 @RequestMapping("posts")
 public class PostController {
@@ -56,7 +59,13 @@ public class PostController {
             post.setText(text);
 
             if (!file.isEmpty()) {
-                post.addImage(storageService.store(file));
+                try {
+                    if (ImageIO.read(file.getInputStream()) != null) {
+                        post.addImage(storageService.store(file));
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             validator.validate(post, result);

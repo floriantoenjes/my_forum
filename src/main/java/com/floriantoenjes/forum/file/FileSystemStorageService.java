@@ -1,5 +1,6 @@
 package com.floriantoenjes.forum.file;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -12,6 +13,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.stream.Stream;
 
 @Service
@@ -25,12 +27,17 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public void store(MultipartFile file) {
+    public String store(MultipartFile file) {
         try {
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
             }
-            Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
+            String filenameWithDatetime = file.getOriginalFilename() + new Date().toString();
+            String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+            String encodedFilename = Integer.toString(filenameWithDatetime.hashCode()) + "." + extension;
+
+            Files.copy(file.getInputStream(), this.rootLocation.resolve(encodedFilename));
+            return encodedFilename;
         } catch (IOException e) {
             throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
         }

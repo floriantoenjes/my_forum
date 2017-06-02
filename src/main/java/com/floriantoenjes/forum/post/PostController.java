@@ -4,6 +4,7 @@ import com.floriantoenjes.forum.file.StorageService;
 import com.floriantoenjes.forum.user.User;
 import com.floriantoenjes.forum.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -11,10 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -35,11 +33,11 @@ public class PostController {
     private StorageService storageService;
 
     @RequestMapping("/{id}")
-
     public String postForm(@PathVariable Long id, Model model) {
         if (!model.containsAttribute("post")) {
             Post post = postService.findOne(id);
             model.addAttribute("post", post);
+            model.addAttribute("images", post.getImages());
         }
         return "post_form";
     }
@@ -56,7 +54,11 @@ public class PostController {
 
         if (user == post.getAuthor()) {
             post.setText(text);
-            post.addImage(file.getOriginalFilename());
+
+            if (!file.isEmpty()) {
+                post.addImage(storageService.store(file));
+            }
+
             validator.validate(post, result);
             if (result.hasErrors()) {
                 redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.post", result);
@@ -64,10 +66,8 @@ public class PostController {
                 return "redirect:/posts/{id}";
             }
             postService.save(post);
-            storageService.store(file);
         }
 
         return String.format("redirect:/topics/%s", post.getTopic().getId());
     }
-
 }

@@ -17,12 +17,12 @@ public class FileController {
     @RequestMapping("/{filename:.+}")
     @ResponseBody
     public Resource getImage(@PathVariable String filename) {
-        return storageService.loadAsResource(filename, fn -> storageService.load(fn));
+        return storageService.loadAsResource(filename, storageService::load);
     }
 
     @RequestMapping("/thumbnails/{filename:.+}")
     @ResponseBody
     public Resource getThumbnail(@PathVariable String filename) {
-        return storageService.loadAsResource(filename, fn -> storageService.loadThumbnail(fn));
+        return storageService.loadAsResource(filename, storageService::loadThumbnail);
     }
 }

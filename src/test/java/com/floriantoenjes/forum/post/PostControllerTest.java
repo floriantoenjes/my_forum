@@ -63,6 +63,7 @@ public class PostControllerTest {
                 .andExpect(model().attribute("post", post));
     }
 
+    // FixMe: Multipart File Upload
     @Test
     public void updatePostTest() throws Exception {
         when(userService.findByUsername(user.getUsername())).thenReturn(user);

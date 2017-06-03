@@ -1,5 +1,6 @@
 package com.floriantoenjes.forum.post;
 
+import com.floriantoenjes.forum.file.StorageService;
 import com.floriantoenjes.forum.topic.Topic;
 import com.floriantoenjes.forum.user.Role;
 import com.floriantoenjes.forum.user.User;
@@ -19,6 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.Validator;
+
+import java.io.FileInputStream;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -42,6 +45,9 @@ public class PostControllerTest {
 
     @Mock
     private Validator validator;
+
+    @Mock
+    private StorageService storageService;
 
     @InjectMocks
     private PostController postController;
@@ -73,14 +79,14 @@ public class PostControllerTest {
         Post post = createMockPost();
         topic.addPost(post);
         when(postService.findOne(1L)).thenReturn(post);
+        MockMultipartFile image = new MockMultipartFile("file", "image.jpg",
+                "image/jpeg", new FileInputStream("upload-dir/test/298219102.PNG"));
 
         mockMvc.perform(fileUpload("/posts/1")
-                // FixMe: Use a real image here
-                .file(new MockMultipartFile("file", "image.jpg", "image/jpeg", "image".getBytes()))
+                .file(image)
                 .param("text", TEST_TEXT))
 
-                .andExpect(redirectedUrl("/posts/1"));
-//                .andExpect(redirectedUrlPattern("/topics/*"));
+                .andExpect(redirectedUrlPattern("/topics/*"));
     }
 
     // ToDo: Write a test for failed post validation

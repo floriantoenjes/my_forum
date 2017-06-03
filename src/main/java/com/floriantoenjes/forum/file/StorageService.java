@@ -17,11 +17,9 @@ public interface StorageService {
 
     Path load(String filename);
 
-    Resource loadAsResource(String filename, Function<String, Path> pathFunction);
-
     Path loadThumbnail(String filename);
 
-    Resource loadThumbnailAsResource(String filename);
+    Resource loadAsResource(String filename, Function<String, Path> pathFunction);
 
     void deleteAll();
 

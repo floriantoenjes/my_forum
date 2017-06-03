@@ -12,7 +12,9 @@
             <p th:text="${postEntry.key.text}"></p>
 
             <p>
-                <img th:each="image : ${postEntry.key.images}" th:src="@{/upload/thumbnails/} + ${image}"/>
+                <a th:each="image : ${postEntry.key.images}" th:href="@{/upload/} + ${image}" target="_blank">
+                    <img th:src="@{/upload/thumbnails/} + ${image}"/>
+                </a>
             </p>
 
             <a th:if="${postEntry.value}" th:href="@{/posts/} + ${postEntry.key.id}">Edit</a>

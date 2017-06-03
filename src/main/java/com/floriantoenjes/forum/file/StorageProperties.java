@@ -9,8 +9,7 @@ public class StorageProperties {
      * Folder location for storing files
      */
     private String location = "upload-dir";
-    private String thumbnailsLocation = "upload-dir\\thumbnails";
-//    private String thumbnailsLocation = "/thumbnails";
+    private String thumbnailsLocation = "upload-dir/thumbnails";
 
 
     public String getLocation() {

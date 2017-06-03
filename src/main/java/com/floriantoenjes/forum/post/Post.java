@@ -4,11 +4,15 @@ import com.floriantoenjes.forum.core.BaseEntity;
 import com.floriantoenjes.forum.topic.Topic;
 import com.floriantoenjes.forum.user.User;
 
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Post extends BaseEntity {
@@ -24,7 +28,10 @@ public class Post extends BaseEntity {
     private Topic topic;
 
     @NotNull
-    Date date = new Date();
+    private Date date = new Date();
+
+    @ElementCollection(targetClass = String.class)
+    private List<String> images = new ArrayList<>();
 
     public Post() {
 
@@ -65,5 +72,17 @@ public class Post extends BaseEntity {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
+
+    public void addImage(String image) {
+        images.add(image);
     }
 }

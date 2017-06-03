@@ -10,6 +10,13 @@
             <p th:text="'Author: ' + ${postEntry.key.author.username}"></p>
             <p th:text="'at ' + ${postEntry.key.date}"></p>
             <p th:text="${postEntry.key.text}"></p>
+
+            <p>
+                <a th:each="image : ${postEntry.key.images}" th:href="@{/upload/} + ${image}" target="_blank">
+                    <img th:src="@{/upload/thumbnails/} + ${image}"/>
+                </a>
+            </p>
+
             <a th:if="${postEntry.value}" th:href="@{/posts/} + ${postEntry.key.id}">Edit</a>
         </li>
     </ul>

@@ -1,5 +1,6 @@
 package com.floriantoenjes.forum.post;
 
+import com.floriantoenjes.forum.file.StorageService;
 import com.floriantoenjes.forum.topic.Topic;
 import com.floriantoenjes.forum.user.Role;
 import com.floriantoenjes.forum.user.User;
@@ -11,15 +12,20 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.Validator;
 
+import java.io.FileInputStream;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -39,6 +45,9 @@ public class PostControllerTest {
 
     @Mock
     private Validator validator;
+
+    @Mock
+    private StorageService storageService;
 
     @InjectMocks
     private PostController postController;
@@ -70,8 +79,11 @@ public class PostControllerTest {
         Post post = createMockPost();
         topic.addPost(post);
         when(postService.findOne(1L)).thenReturn(post);
+        MockMultipartFile image = new MockMultipartFile("file", "image.jpg",
+                "image/jpeg", new FileInputStream("upload-dir/test/298219102.PNG"));
 
-        mockMvc.perform(post("/posts/1")
+        mockMvc.perform(fileUpload("/posts/1")
+                .file(image)
                 .param("text", TEST_TEXT))
 
                 .andExpect(redirectedUrlPattern("/topics/*"));

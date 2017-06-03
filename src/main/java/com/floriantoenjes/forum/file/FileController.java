@@ -12,11 +12,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class FileController {
 
     @Autowired
-    StorageService storageService;
+    private StorageService storageService;
 
     @RequestMapping("/{filename:.+}")
     @ResponseBody
     public Resource getImage(@PathVariable String filename) {
         return storageService.loadAsResource(filename);
+    }
+
+    @RequestMapping("/thumbnails/{filename:.+}")
+    @ResponseBody
+    public Resource getThumbnail(@PathVariable String filename) {
+        return storageService.loadThumbnailAsResource(filename);
     }
 }

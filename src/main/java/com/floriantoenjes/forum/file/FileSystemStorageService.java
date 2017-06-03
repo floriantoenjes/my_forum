@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -20,10 +24,12 @@ import java.util.stream.Stream;
 public class FileSystemStorageService implements StorageService {
 
     private final Path rootLocation;
+    private final Path thumbnailsLocation;
 
     @Autowired
     public FileSystemStorageService(StorageProperties properties) {
         this.rootLocation = Paths.get(properties.getLocation());
+        this.thumbnailsLocation = Paths.get(properties.getThumbnailsLocation());
     }
 
     @Override
@@ -35,6 +41,12 @@ public class FileSystemStorageService implements StorageService {
 
             String encodedFilename = encodeFilename(file.getOriginalFilename());
             Files.copy(file.getInputStream(), this.rootLocation.resolve(encodedFilename));
+
+            BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
+            img.createGraphics().drawImage(ImageIO.read(file.getInputStream())
+                    .getScaledInstance(100, 100, Image.SCALE_SMOOTH),0,0,null);
+            ImageIO.write(img, "jpg", new File(thumbnailsLocation + "/" + encodedFilename));
+
             return encodedFilename;
         } catch (IOException e) {
             throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
@@ -81,6 +93,33 @@ public class FileSystemStorageService implements StorageService {
             throw new StorageFileNotFoundException("Could not read file: " + filename, e);
         }
     }
+
+
+    @Override
+    public Path loadThumbnail(String filename) {
+        return thumbnailsLocation.resolve(filename);
+    }
+
+    @Override
+    public Resource loadThumbnailAsResource(String filename) {
+        try {
+            Path file = loadThumbnail(filename);
+            Resource resource = new UrlResource(file.toUri());
+            if(resource.exists() || resource.isReadable()) {
+                return resource;
+            }
+            else {
+                throw new StorageFileNotFoundException("Could not read file: " + filename);
+
+            }
+        } catch (MalformedURLException e) {
+            throw new StorageFileNotFoundException("Could not read file: " + filename, e);
+        }
+    }
+
+
+
+
 
     @Override
     public void deleteAll() {

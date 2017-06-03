@@ -18,6 +18,10 @@ public interface StorageService {
 
     Resource loadAsResource(String filename);
 
+    Path loadThumbnail(String filename);
+
+    Resource loadThumbnailAsResource(String filename);
+
     void deleteAll();
 
 }

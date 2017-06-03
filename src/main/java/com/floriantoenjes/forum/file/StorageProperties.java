@@ -1,7 +1,5 @@
 package com.floriantoenjes.forum.file;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -11,6 +9,9 @@ public class StorageProperties {
      * Folder location for storing files
      */
     private String location = "upload-dir";
+    private String thumbnailsLocation = "upload-dir\\thumbnails";
+//    private String thumbnailsLocation = "/thumbnails";
+
 
     public String getLocation() {
         return location;
@@ -20,4 +21,11 @@ public class StorageProperties {
         this.location = location;
     }
 
+    public String getThumbnailsLocation() {
+        return thumbnailsLocation;
+    }
+
+    public void setThumbnailsLocation(String thumbnailsLocation) {
+        this.thumbnailsLocation = thumbnailsLocation;
+    }
 }

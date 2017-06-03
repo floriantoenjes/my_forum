@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 @Service
@@ -78,32 +79,14 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public Resource loadAsResource(String filename) {
-        try {
-            Path file = load(filename);
-            Resource resource = new UrlResource(file.toUri());
-            if(resource.exists() || resource.isReadable()) {
-                return resource;
-            }
-            else {
-                throw new StorageFileNotFoundException("Could not read file: " + filename);
-
-            }
-        } catch (MalformedURLException e) {
-            throw new StorageFileNotFoundException("Could not read file: " + filename, e);
-        }
-    }
-
-
-    @Override
     public Path loadThumbnail(String filename) {
         return thumbnailsLocation.resolve(filename);
     }
 
     @Override
-    public Resource loadThumbnailAsResource(String filename) {
+    public Resource loadAsResource(String filename, Function<String, Path> pathFunction) {
         try {
-            Path file = loadThumbnail(filename);
+            Path file = pathFunction.apply(filename);
             Resource resource = new UrlResource(file.toUri());
             if(resource.exists() || resource.isReadable()) {
                 return resource;
@@ -116,7 +99,6 @@ public class FileSystemStorageService implements StorageService {
             throw new StorageFileNotFoundException("Could not read file: " + filename, e);
         }
     }
-
 
     @Override
     public void deleteAll() {

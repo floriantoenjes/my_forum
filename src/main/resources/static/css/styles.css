@@ -6,3 +6,7 @@ body {
         background-color: #ac4343;
         color: white;
 }
+
+.error-text {
+    color: #ac4343;
+}

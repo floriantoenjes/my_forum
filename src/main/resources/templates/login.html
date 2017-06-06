@@ -5,7 +5,7 @@
     <ul th:replace="layout :: nav"></ul>
     <h1>Forum</h1>
     <h3>Login</h3>
-    <p th:if="${loginError}">Username or password do not match</p>
+    <p th:if="${loginError}" class="error-text">Username or password do not match.</p>
     <form th:action="@{/login}" method="post" th:object="${user}">
         <input th:field="*{username}" placeholder="Username"/>
         <input th:field="*{password}" placeholder="Password" type="password"/>

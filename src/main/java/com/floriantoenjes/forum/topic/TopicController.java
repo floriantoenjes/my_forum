@@ -48,9 +48,9 @@ public class TopicController {
     @Autowired
     private PostService postService;
 
-    @RequestMapping("/{id}")
-    public String topic(@PathVariable Long id, Model model) {
-        Topic topic = topicService.findOne(id);
+    @RequestMapping("/{topicId}")
+    public String topic(@PathVariable Long topicId, Model model) {
+        Topic topic = topicService.findOne(topicId);
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
 
@@ -63,23 +63,23 @@ public class TopicController {
             }
         });
 
-        model.addAttribute("topic", topic);
-        model.addAttribute("postMap", postMap);
         if (!model.containsAttribute("reply")) {
             model.addAttribute("reply", new Post());
         }
+        model.addAttribute("topic", topic);
+        model.addAttribute("postMap", postMap);
         return "topic";
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{topicId}", method = RequestMethod.POST)
     @Secured("ROLE_USER")
-    public String addQuickReply(@PathVariable Long id, Post reply, BindingResult result,
+    public String addQuickReply(@PathVariable Long topicId, Post reply, BindingResult result,
                            RedirectAttributes redirectAttributes) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
         reply.setAuthor(user);
 
-        Topic topic = topicService.findOne(id);
+        Topic topic = topicService.findOne(topicId);
         topic.addPost(reply);
 
         validator.validate(reply, result);
@@ -89,17 +89,17 @@ public class TopicController {
         } else {
             topicService.save(topic);
         }
-        return "redirect:/topics/{id}";
+        return "redirect:/topics/{topicId}";
     }
 
-    @RequestMapping("/{id}/add")
-    public String addReplyForm(@PathVariable Long id, Model model) {
-        Topic topic = topicService.findOne(id);
+    @RequestMapping("/{topicId}/add")
+    public String addReplyForm(@PathVariable Long topicId, Model model) {
+        Topic topic = topicService.findOne(topicId);
 
         if (!model.containsAttribute("post")) {
             model.addAttribute("post", new Post());
         }
-        model.addAttribute("action", String.format("/topics/%s/add", id));
+        model.addAttribute("action", String.format("/topics/%s/add", topicId));
         model.addAttribute("submit", "Add reply");
 
         return "post_form";
@@ -127,7 +127,7 @@ public class TopicController {
                     redirectAttributes.addFlashAttribute("imageUploadError", true);
                     redirectAttributes.addFlashAttribute("imageUploadErrorMessage",
                             "You can only upload images");
-                    return "redirect:/topics/{id}/add";
+                    return "redirect:/topics/{topicId}/add";
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -137,11 +137,11 @@ public class TopicController {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.post", result);
             redirectAttributes.addFlashAttribute("post", post);
-            return "redirect:/topics/{id}/add";
+            return "redirect:/topics/{topicId}/add";
         }
         topicService.save(topic);
 
-        return String.format("redirect:/topics/%s", post.getTopic().getId());
+        return "redirect:/topics/{topicId}";
     }
 
 
@@ -167,6 +167,7 @@ public class TopicController {
         topic.setAuthor(user);
 
         boardService.findOne(boardId).addTopic(topic);
+
         validator.validate(topic, result);
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.topic", result);

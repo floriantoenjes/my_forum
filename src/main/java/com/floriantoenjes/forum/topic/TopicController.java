@@ -105,17 +105,16 @@ public class TopicController {
         return "post_form";
     }
 
-    @RequestMapping(value = "/{id}/add", method = RequestMethod.POST)
-    public String addReply(@PathVariable Long id, @RequestParam String text, @RequestParam MultipartFile file,
+    @RequestMapping(value = "/{topicId}/add", method = RequestMethod.POST)
+    public String addReply(@PathVariable Long topicId, @RequestParam String text, @RequestParam MultipartFile file,
                            Post post, BindingResult result, RedirectAttributes redirectAttributes) {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         post.setAuthor(userService.findByUsername(username));
-        post.setId(null);
         post.setText(text);
 
-        Topic topic = topicService.findOne(id);
+        Topic topic = topicService.findOne(topicId);
         topic.addPost(post);
 
         if (!file.isEmpty()) {

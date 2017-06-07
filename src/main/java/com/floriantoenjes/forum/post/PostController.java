@@ -35,28 +35,28 @@ public class PostController {
     @Autowired
     private StorageService storageService;
 
-    @RequestMapping("/{id}")
-    public String postForm(@PathVariable Long id, Model model) {
+    @RequestMapping("/{postId}")
+    public String postForm(@PathVariable Long postId, Model model) {
         if (!model.containsAttribute("post")) {
-            Post post = postService.findOne(id);
+            Post post = postService.findOne(postId);
             model.addAttribute("post", post);
             model.addAttribute("images", post.getImages());
-            model.addAttribute("action", String.format("/posts/%s", id));
+            model.addAttribute("action", String.format("/posts/%s", postId));
             model.addAttribute("submit", "Update post");
 
         }
         return "post_form";
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{postId}", method = RequestMethod.POST)
     @Secured("ROLE_USER")
-    public String updatePost(@PathVariable Long id, @RequestParam String text, Post post,
+    public String updatePost(@PathVariable Long postId, @RequestParam String text, Post post,
                              @RequestParam MultipartFile file,
                              BindingResult result, RedirectAttributes redirectAttributes) {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
-        post = postService.findOne(id);
+        post = postService.findOne(postId);
 
         if (user == post.getAuthor()) {
             post.setText(text);
@@ -71,7 +71,7 @@ public class PostController {
                         redirectAttributes.addFlashAttribute("imageUploadError", true);
                         redirectAttributes.addFlashAttribute("imageUploadErrorMessage",
                                 "You can only upload images");
-                        return "redirect:/posts/{id}";
+                        return "redirect:/posts/{postId}";
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -82,7 +82,7 @@ public class PostController {
             if (result.hasErrors()) {
                 redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.post", result);
                 redirectAttributes.addFlashAttribute("post", post);
-                return "redirect:/posts/{id}";
+                return "redirect:/posts/{postId}";
             }
             postService.save(post);
         }

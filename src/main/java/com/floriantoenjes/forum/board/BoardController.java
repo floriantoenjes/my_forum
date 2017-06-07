@@ -42,9 +42,10 @@ public class BoardController {
         IntStream.range(0, p.getTotalPages()).forEach(pages::add);
 
         model.addAttribute("board", board);
-        model.addAttribute("topics", p.getContent());
-        model.addAttribute("pages", pages);
         model.addAttribute("currentPage", page);
+        model.addAttribute("pages", pages);
+        model.addAttribute("topics", p.getContent());
+
         return "board";
     }
 

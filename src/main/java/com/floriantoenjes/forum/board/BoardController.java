@@ -34,6 +34,7 @@ public class BoardController {
     public String board(@PathVariable Long boardId,
                         @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
                         Model model) {
+
         final int PAGE_SIZE = 10;
         Board board = boardService.findOne(boardId);
 

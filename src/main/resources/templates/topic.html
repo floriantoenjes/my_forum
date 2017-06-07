@@ -27,5 +27,6 @@
         <div class="error-message" th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></div>
         <button type="submit">Reply</button>
     </form>
+    <a th:href="@{/topics/} + ${topic.id} + '/add'">Add reply</a>
 </body>
 </html>

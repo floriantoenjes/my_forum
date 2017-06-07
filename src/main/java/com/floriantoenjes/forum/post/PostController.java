@@ -41,6 +41,9 @@ public class PostController {
             Post post = postService.findOne(id);
             model.addAttribute("post", post);
             model.addAttribute("images", post.getImages());
+            model.addAttribute("action", String.format("/posts/%s", id));
+            model.addAttribute("submit", "Update post");
+
         }
         return "post_form";
     }
@@ -60,7 +63,6 @@ public class PostController {
 
             if (!file.isEmpty()) {
                 try {
-                    // ToDo: Add validation to the few if file is not an image
                     if (ImageIO.read(file.getInputStream()) != null) {
                         post.addImage(
                                 storageService.store(file)

@@ -30,13 +30,12 @@ public class BoardController {
         return "index";
     }
 
-    // ToDo: Sort the topics by date
-    @RequestMapping("/{id}")
-    public String board(@PathVariable Long id,
+    @RequestMapping("/{boardId}")
+    public String board(@PathVariable Long boardId,
                         @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
                         Model model) {
         final int PAGE_SIZE = 10;
-        Board board = boardService.findOne(id);
+        Board board = boardService.findOne(boardId);
 
         Page<Topic> p = topicService.findByBoardOrderByDateDesc(board, new PageRequest(page, PAGE_SIZE));
         ArrayList<Integer> pages = new ArrayList<>();

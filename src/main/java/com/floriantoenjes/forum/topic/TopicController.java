@@ -93,6 +93,7 @@ public class TopicController {
     }
 
     @RequestMapping("/{topicId}/add")
+    @Secured("ROLE_USER")
     public String addReplyForm(@PathVariable Long topicId, Model model) {
         Topic topic = topicService.findOne(topicId);
 
@@ -106,6 +107,7 @@ public class TopicController {
     }
 
     @RequestMapping(value = "/{topicId}/add", method = RequestMethod.POST)
+    @Secured("ROLE_USER")
     public String addReply(@PathVariable Long topicId, @RequestParam String text, @RequestParam MultipartFile file,
                            Post post, BindingResult result, RedirectAttributes redirectAttributes) {
 

@@ -23,10 +23,10 @@ public class User extends BaseEntity implements UserDetails {
     @Size(min = 8, max = 25)
     private String password;
 
-    @OneToMany
+    @OneToMany(mappedBy = "author")
     private List<Topic> topics;
 
-    @OneToMany
+    @OneToMany(mappedBy = "author")
     private List<Post> posts;
 
     @OneToOne(cascade = CascadeType.ALL)

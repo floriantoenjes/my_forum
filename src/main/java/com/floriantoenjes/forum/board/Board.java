@@ -15,7 +15,7 @@ public class Board extends BaseEntity {
     @Size(min = 3, max = 50)
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Topic> topics;
 
     public Board() {

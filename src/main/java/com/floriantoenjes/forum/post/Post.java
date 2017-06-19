@@ -4,10 +4,7 @@ import com.floriantoenjes.forum.core.BaseEntity;
 import com.floriantoenjes.forum.topic.Topic;
 import com.floriantoenjes.forum.user.User;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -17,6 +14,7 @@ import java.util.List;
 @Entity
 public class Post extends BaseEntity {
     @ManyToOne
+    @JoinColumn(name = "author_id")
     @NotNull
     private User author;
 
@@ -24,6 +22,7 @@ public class Post extends BaseEntity {
     private String text;
 
     @ManyToOne
+    @JoinColumn(name = "topic_id")
     @NotNull
     private Topic topic;
 

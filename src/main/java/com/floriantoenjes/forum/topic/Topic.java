@@ -5,10 +5,7 @@ import com.floriantoenjes.forum.core.BaseEntity;
 import com.floriantoenjes.forum.post.Post;
 import com.floriantoenjes.forum.user.User;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -21,14 +18,16 @@ public class Topic extends BaseEntity {
     @Size(min = 5, max = 50)
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
     private List<Post> posts;
 
     @ManyToOne
+    @JoinColumn(name = "author_id")
     @NotNull
     private User author;
 
     @ManyToOne
+    @JoinColumn(name = "board_id")
     @NotNull
     private Board board;
 

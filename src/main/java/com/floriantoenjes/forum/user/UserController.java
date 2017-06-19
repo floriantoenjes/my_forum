@@ -17,6 +17,9 @@ import javax.validation.Valid;
 public class UserController {
 
     @Autowired
+    private RoleService roleService;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -47,7 +50,7 @@ public class UserController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(User user, @RequestParam String passwordAgain, BindingResult result, RedirectAttributes redirectAttributes) {
-        user.setRole(new Role("ROLE_USER"));
+        user.setRole(roleService.findByName("ROLE_USER"));
         validator.validate(user, result);
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.user", result);

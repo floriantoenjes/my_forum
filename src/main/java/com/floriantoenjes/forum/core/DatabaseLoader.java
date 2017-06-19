@@ -5,6 +5,7 @@ import com.floriantoenjes.forum.board.BoardService;
 import com.floriantoenjes.forum.post.Post;
 import com.floriantoenjes.forum.topic.Topic;
 import com.floriantoenjes.forum.user.Role;
+import com.floriantoenjes.forum.user.RoleService;
 import com.floriantoenjes.forum.user.User;
 import com.floriantoenjes.forum.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,14 @@ import java.util.stream.IntStream;
 public class DatabaseLoader implements ApplicationRunner {
 
     private BoardService boardService;
-
     private UserService userService;
+    private RoleService roleService;
 
     @Autowired
-    public DatabaseLoader(BoardService boardService, UserService userService) {
+    public DatabaseLoader(BoardService boardService, UserService userService, RoleService roleService) {
         this.boardService = boardService;
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @Override
@@ -33,9 +35,12 @@ public class DatabaseLoader implements ApplicationRunner {
         "eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et " +
                 "accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est ";
 
-        User user1 = new User("user1", "password", new Role("ROLE_USER"));
+        Role userRole = new Role("ROLE_USER");
+        roleService.save(userRole);
+
+        User user1 = new User("user1", "password", userRole);
         userService.save(user1);
-        User user2 = new User("user2", "password", new Role("ROLE_USER"));
+        User user2 = new User("user2", "password", userRole);
         userService.save(user2);
 
 

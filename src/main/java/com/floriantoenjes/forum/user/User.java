@@ -29,7 +29,7 @@ public class User extends BaseEntity implements UserDetails {
     @OneToMany(mappedBy = "author")
     private List<Post> posts;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @NotNull
     private Role role;
 

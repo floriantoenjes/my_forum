@@ -49,13 +49,13 @@ public class TopicControllerTest {
     private RoleService roleService;
 
     @Autowired
+    private TopicController topicController;
+
+    @Autowired
     private TopicService topicService;
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private TopicController topicController;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -67,9 +67,13 @@ public class TopicControllerTest {
 
         user = new User("test_user", "password", userRole);
         userService.save(user);
+
         board = new Board("Test board");
         boardService.save(board);
-        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(user,  null, user.getAuthorities()));
+
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(user,
+                null, user.getAuthorities()));
+
         mockMvc = MockMvcBuilders.standaloneSetup(topicController).build();
     }
 

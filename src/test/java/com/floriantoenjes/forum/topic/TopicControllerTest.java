@@ -4,6 +4,7 @@ import com.floriantoenjes.forum.board.Board;
 import com.floriantoenjes.forum.board.BoardService;
 import com.floriantoenjes.forum.post.Post;
 import com.floriantoenjes.forum.user.Role;
+import com.floriantoenjes.forum.user.RoleService;
 import com.floriantoenjes.forum.user.User;
 import com.floriantoenjes.forum.user.UserService;
 import org.junit.Before;
@@ -45,6 +46,9 @@ public class TopicControllerTest {
     private BoardService boardService;
 
     @Autowired
+    private RoleService roleService;
+
+    @Autowired
     private TopicService topicService;
 
     @Autowired
@@ -58,7 +62,10 @@ public class TopicControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        user = new User("test_user", "password", new Role("ROLE_USER"));
+        Role userRole = new Role("ROLE_USER");
+        roleService.save(userRole);
+
+        user = new User("test_user", "password", userRole);
         userService.save(user);
         board = new Board("Test board");
         boardService.save(board);

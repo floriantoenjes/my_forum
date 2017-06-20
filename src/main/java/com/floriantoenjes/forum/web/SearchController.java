@@ -18,6 +18,7 @@ import java.util.stream.IntStream;
 @Controller
 @RequestMapping("search")
 public class SearchController {
+
     @Autowired
     private PostService postService;
 
@@ -78,10 +79,10 @@ public class SearchController {
         List<Integer> pages = new ArrayList<>();
         IntStream.range(0, (int) Math.ceil(posts.size() / (double) PAGE_SIZE)).forEach(pages::add);
 
-        model.addAttribute("results", results);
-        model.addAttribute("query", query);
-        model.addAttribute("pages", pages);
         model.addAttribute("currentPage", page);
+        model.addAttribute("pages", pages);
+        model.addAttribute("query", query);
+        model.addAttribute("results", results);
 
         return "search_results";
     }

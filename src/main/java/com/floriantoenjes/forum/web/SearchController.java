@@ -34,6 +34,7 @@ public class SearchController {
 
         final int PAGE_SIZE = 10;
         final int TEXT_LENGTH = 50 / 2;
+        final String ELLIPSIS = "...";
 
         List<Post> posts = new ArrayList<>();
         for (Post post : postService.findAll()) {
@@ -46,10 +47,12 @@ public class SearchController {
 
                 if (matcher.find()) {
                     if (matcher.group().length() != post.getText().length()) {
-                        if (matcher.hitEnd()) {
-                            post.setText("..." + matcher.group());
+                        if (matcher.start() == 0) {
+                            post.setText(matcher.group() + ELLIPSIS);
+                        } else if (matcher.hitEnd()) {
+                            post.setText(ELLIPSIS + matcher.group());
                         } else {
-                            post.setText(matcher.group() + "...");
+                            post.setText(ELLIPSIS + matcher.group() + ELLIPSIS);
                         }
                     }
 

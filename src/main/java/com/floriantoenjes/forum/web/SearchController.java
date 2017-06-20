@@ -31,25 +31,34 @@ public class SearchController {
     public String searchResults(@RequestParam String query,
                                 @RequestParam(value = "page", required = false, defaultValue = "0")
                                         Integer page, Model model) {
+
         final int PAGE_SIZE = 10;
-        final int TEXT_LENGTH = 50;
+        final int TEXT_LENGTH = 50 / 2;
 
         List<Post> posts = new ArrayList<>();
         for (Post post : postService.findAll()) {
+
             if (post.getText().toLowerCase().contains(query.toLowerCase())) {
-                Pattern pattern = Pattern.compile(String.format("(.{0,%d}%s.{0,%d})", TEXT_LENGTH / 2, query, TEXT_LENGTH / 2));
+                Pattern pattern = Pattern.compile(String.format("(.{0,%d}%s.{0,%d})",
+                        TEXT_LENGTH, query, TEXT_LENGTH));
+
                 Matcher matcher = pattern.matcher(post.getText());
 
                 if (matcher.find()) {
                     if (matcher.group().length() != post.getText().length()) {
-                        post.setText("..." + matcher.group() + "...");
+                        if (matcher.hitEnd()) {
+                            post.setText("..." + matcher.group());
+                        } else {
+                            post.setText(matcher.group() + "...");
+                        }
                     }
+
                 }
                 posts.add(post);
             }
         }
 
-        // Pagination
+        /* Pagination */
         int startIndex = page * PAGE_SIZE;
         int endIndex;
 
@@ -57,7 +66,7 @@ public class SearchController {
         if (posts.size() >= (page + 1) * PAGE_SIZE) {
             endIndex = (page + 1) * PAGE_SIZE;
 
-            // Less than fits on to the page? Take the remainder
+        // Less than fits on to the page? Take the remainder
         } else {
             endIndex = startIndex + (posts.size() % PAGE_SIZE);
         }

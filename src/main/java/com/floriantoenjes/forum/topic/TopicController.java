@@ -9,6 +9,7 @@ import com.floriantoenjes.forum.user.User;
 import com.floriantoenjes.forum.user.UserService;
 import com.floriantoenjes.forum.util.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -33,6 +34,9 @@ import java.util.stream.IntStream;
 @Controller
 @RequestMapping("topics")
 public class TopicController {
+
+    @Value("${com.floriantoenjes.forum.page-size}")
+    private int PAGE_SIZE;
 
     @Autowired
     private TopicService topicService;
@@ -60,7 +64,7 @@ public class TopicController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
 
-        Pagination<Post> pagination = new Pagination<>(topic.getPosts(), page);
+        Pagination<Post> pagination = new Pagination<>(topic.getPosts(), page, PAGE_SIZE);
         List<Post> posts = pagination.getElements();
         List<Integer> pages = pagination.getPages();
 

@@ -4,6 +4,7 @@ import com.floriantoenjes.forum.post.Post;
 import com.floriantoenjes.forum.post.PostService;
 import com.floriantoenjes.forum.util.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,9 @@ import java.util.regex.Pattern;
 @Controller
 @RequestMapping("search")
 public class SearchController {
+
+    @Value("${com.floriantoenjes.forum.page-size}")
+    private int PAGE_SIZE;
 
     @Autowired
     private PostService postService;
@@ -32,7 +36,6 @@ public class SearchController {
                                 @RequestParam(value = "page", required = false, defaultValue = "0")
                                         Integer page, Model model) {
 
-        final int PAGE_SIZE = 10;
         final int TEXT_LENGTH = 50 / 2;
         final String ELLIPSIS = "...";
 
@@ -62,7 +65,7 @@ public class SearchController {
         }
 
 
-        Pagination<Post> pagination = new Pagination<>(posts, page);
+        Pagination<Post> pagination = new Pagination<>(posts, page, PAGE_SIZE);
         List<Integer> pages = pagination.getPages();
         List<Post> results = pagination.getElements();
 

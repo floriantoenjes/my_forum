@@ -8,8 +8,7 @@ public class Pagination<E> {
     private List<Integer> pages;
     private List<E> elements;
 
-    public Pagination(List<E> list, Integer page) {
-        final int PAGE_SIZE = 10;
+    public Pagination(List<E> list, Integer page, Integer PAGE_SIZE) {
 
         int startIndex = page * PAGE_SIZE;
         int endIndex = startIndex + PAGE_SIZE;

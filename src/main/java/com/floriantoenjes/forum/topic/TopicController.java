@@ -7,6 +7,7 @@ import com.floriantoenjes.forum.post.Post;
 import com.floriantoenjes.forum.post.PostService;
 import com.floriantoenjes.forum.user.User;
 import com.floriantoenjes.forum.user.UserService;
+import com.floriantoenjes.forum.util.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -59,18 +60,9 @@ public class TopicController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
 
-        final int PAGE_SIZE = 10;
-        int startIndex = page * PAGE_SIZE;
-        int endIndex = startIndex + PAGE_SIZE;
-
-        if (topic.getPosts().size() < endIndex) {
-            endIndex = topic.getPosts().size();
-        }
-
-        List<Post> posts = topic.getPosts().subList(startIndex, endIndex);
-
-        List<Integer> pages = new ArrayList<>();
-        IntStream.range(0, (int) Math.ceil(topic.getPosts().size() / (double) PAGE_SIZE)).forEach(pages::add);
+        Pagination<Post> pagination = new Pagination<>(topic.getPosts(), page);
+        List<Post> posts = pagination.getElements();
+        List<Integer> pages = pagination.getPages();
 
         if (!model.containsAttribute("reply")) {
             model.addAttribute("reply", new Post());

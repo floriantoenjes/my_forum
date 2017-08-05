@@ -2,6 +2,7 @@ package com.floriantoenjes.forum.web;
 
 import com.floriantoenjes.forum.post.Post;
 import com.floriantoenjes.forum.post.PostService;
+import com.floriantoenjes.forum.util.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("search")
@@ -62,19 +61,10 @@ public class SearchController {
             }
         }
 
-        /* Pagination */
-        int startIndex = page * PAGE_SIZE;
-        int endIndex = startIndex + PAGE_SIZE;
 
-        // More or same than fits on to the page? Make it page sized
-        if (posts.size() < endIndex) {
-            endIndex = posts.size();
-        }
-
-        List<Post> results = posts.subList(startIndex, endIndex);
-
-        List<Integer> pages = new ArrayList<>();
-        IntStream.range(0, (int) Math.ceil(posts.size() / (double) PAGE_SIZE)).forEach(pages::add);
+        Pagination<Post> pagination = new Pagination<>(posts, page);
+        List<Integer> pages = pagination.getPages();
+        List<Post> results = pagination.getElements();
 
         model.addAttribute("currentPage", page);
         model.addAttribute("pages", pages);
@@ -83,4 +73,5 @@ public class SearchController {
 
         return "search_results";
     }
+
 }

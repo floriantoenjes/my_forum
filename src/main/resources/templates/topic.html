@@ -4,6 +4,7 @@
 <body>
     <ul th:replace="layout :: nav"></ul>
     <h1>Forum</h1>
+    <a th:href="@{/boards/} + ${topic.board.id}" th:text="${topic.board.name}"></a>
     <h2 th:text="${topic.name}"></h2>
     <ul>
         <li th:each="post : ${posts}">

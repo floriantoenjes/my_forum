@@ -23,8 +23,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("topics")
@@ -49,17 +52,35 @@ public class TopicController {
     private PostService postService;
 
     @RequestMapping("/{topicId}")
-    public String topic(@PathVariable Long topicId, Model model) {
+    public String topic(@PathVariable Long topicId,
+                        @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+                        Model model) {
         Topic topic = topicService.findOne(topicId);
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
+
+        final int PAGE_SIZE = 10;
+        int startIndex = page * PAGE_SIZE;
+        int endIndex = startIndex + PAGE_SIZE;
+
+        if (topic.getPosts().size() < endIndex) {
+            endIndex = topic.getPosts().size();
+        }
+
+        List<Post> posts = topic.getPosts().subList(startIndex, endIndex);
+
+        List<Integer> pages = new ArrayList<>();
+        IntStream.range(0, (int) Math.ceil(topic.getPosts().size() / (double) PAGE_SIZE)).forEach(pages::add);
 
         if (!model.containsAttribute("reply")) {
             model.addAttribute("reply", new Post());
         }
 
         model.addAttribute("topic", topic);
+        model.addAttribute("posts", posts);
         model.addAttribute("username", username);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("pages", pages);
         return "topic";
     }
 

@@ -88,4 +88,13 @@ public class Topic extends BaseEntity {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    public Post getLastPost() {
+        return posts.get(posts.size() - 1);
+    }
+
+    public Integer getLastPage() {
+        int PAGE_SIZE = 10;
+        return (int) Math.ceil((posts.size() - 1) / PAGE_SIZE);
+    }
 }

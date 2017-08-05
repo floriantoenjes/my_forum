@@ -10,6 +10,7 @@
             <a th:href="@{/topics/} + ${topic.id}" th:text="${topic.name}"></a>
             <span th:text="'by ' + ${topic.author.username}"></span>
             <p th:text="'at ' + ${topic.date}"></p>
+            <a th:href="@{/topics/{topicId}(topicId=${topic.id}, page=${topic.lastPage})}" th:text="'last post at ' + ${topic.lastPost.date} + ' by ' + ${topic.lastPost.author.username}"></a>
         </li>
     </ul>
     <ul>

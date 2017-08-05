@@ -76,7 +76,9 @@ public class DatabaseLoader implements ApplicationRunner {
                     String template = templates[i % templates.length];
                     String buzzword = buzzwords[i % buzzwords.length];
                     Topic t = new Topic(user1, String.format(template, buzzword));
-                    t.addPost(new Post(user1, LOREM_IPSUM));
+                    IntStream.range(0, 20).forEach( j -> {
+                        t.addPost(new Post(user1, LOREM_IPSUM));
+                    });
                     board1.addTopic(t);
                 });
 

@@ -6,18 +6,18 @@
     <h1>Forum</h1>
     <h2 th:text="${topic.name}"></h2>
     <ul>
-        <li th:each="postEntry : ${postMap}">
-            <p th:text="'Author: ' + ${postEntry.key.author.username}"></p>
-            <p th:text="'at ' + ${postEntry.key.date}"></p>
-            <p th:text="${postEntry.key.text}"></p>
+        <li th:each="post : ${topic.posts}">
+            <p th:text="'Author: ' + ${post.author.username}"></p>
+            <p th:text="'at ' + ${post.date}"></p>
+            <p th:text="${post.text}"></p>
 
             <p>
-                <a th:each="image : ${postEntry.key.images}" th:href="@{/upload/} + ${image}" target="_blank">
+                <a th:each="image : ${post.images}" th:href="@{/upload/} + ${image}" target="_blank">
                     <img th:src="@{/upload/thumbnails/} + ${image}"/>
                 </a>
             </p>
 
-            <a th:if="${postEntry.value}" th:href="@{/posts/} + ${postEntry.key.id}">Edit</a>
+            <a th:if="${post.author.username.equals(username)}" th:href="@{/posts/} + ${post.id}">Edit</a>
         </li>
     </ul>
     <form sec:authorize="isAuthenticated()" th:action="@{/topics/} + ${topic.id}" method="post" th:object="${reply}">

@@ -54,20 +54,12 @@ public class TopicController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
 
-        Map<Post, Boolean> postMap = new LinkedHashMap<>();
-        topic.getPosts().forEach(post -> {
-            if (user == post.getAuthor()) {
-                postMap.put(post, true);
-            } else {
-                postMap.put(post, false);
-            }
-        });
-
         if (!model.containsAttribute("reply")) {
             model.addAttribute("reply", new Post());
         }
+
         model.addAttribute("topic", topic);
-        model.addAttribute("postMap", postMap);
+        model.addAttribute("username", username);
         return "topic";
     }
 

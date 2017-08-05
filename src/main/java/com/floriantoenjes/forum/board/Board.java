@@ -6,6 +6,7 @@ import com.floriantoenjes.forum.topic.Topic;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -18,6 +19,9 @@ public class Board extends BaseEntity {
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Topic> topics;
+
+    @OneToOne
+    private Topic lastTopic;
 
     public Board() {
         this.topics = new ArrayList<>();
@@ -50,9 +54,10 @@ public class Board extends BaseEntity {
     }
 
     public Topic getLastTopic() {
-        if (topics.size() > 0) {
-            return topics.get(topics.size() - 1);
-        }
-        return null;
+        return lastTopic;
+    }
+
+    public void setLastTopic(Topic lastTopic) {
+        this.lastTopic = lastTopic;
     }
 }

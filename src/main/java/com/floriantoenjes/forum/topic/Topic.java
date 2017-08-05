@@ -85,6 +85,7 @@ public class Topic extends BaseEntity {
         post.setTopic(this);
         lastPost = post;
         lastPostDate = post.getDate();
+        board.setLastTopic(this);
         return posts.add(post);
     }
 

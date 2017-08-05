@@ -8,7 +8,8 @@
     <ul>
         <li th:each="board : ${boards}">
             <a th:href="@{/boards/} + ${board.id}" th:text="${board.name}"></a>
-            <p th:if="${board.lastTopic}" th:text="${board.lastTopic.name} + ' by ' + ${board.lastTopic.lastPost.author.username}"></p>
+            <a th:if="${board.lastTopic}" th:text="${board.lastTopic.name} + ' by ' + ${board.lastTopic.lastPost.author.username}"
+            th:href="@{/topics/{topicId}(topicId=${board.lastTopic.id}, page=${board.lastTopic.lastPage})}"></a>
         </li>
     </ul>
 </body>

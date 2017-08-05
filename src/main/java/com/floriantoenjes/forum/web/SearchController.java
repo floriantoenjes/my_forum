@@ -64,16 +64,13 @@ public class SearchController {
 
         /* Pagination */
         int startIndex = page * PAGE_SIZE;
-        int endIndex;
+        int endIndex = startIndex + PAGE_SIZE;
 
         // More or same than fits on to the page? Make it page sized
-        if (posts.size() >= (page + 1) * PAGE_SIZE) {
-            endIndex = (page + 1) * PAGE_SIZE;
-
-        // Less than fits on to the page? Take the remainder
-        } else {
-            endIndex = startIndex + (posts.size() % PAGE_SIZE);
+        if (posts.size() < endIndex) {
+            endIndex = posts.size();
         }
+
         List<Post> results = posts.subList(startIndex, endIndex);
 
         List<Integer> pages = new ArrayList<>();

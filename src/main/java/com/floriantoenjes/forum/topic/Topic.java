@@ -34,6 +34,11 @@ public class Topic extends BaseEntity {
     @NotNull
     private Date date = new Date();
 
+    @OneToOne
+    private Post lastPost;
+
+    private Date lastPostDate = new Date();
+
     public Topic() {
         this.posts = new ArrayList<>();
     }
@@ -78,6 +83,8 @@ public class Topic extends BaseEntity {
 
     public boolean addPost(Post post) {
         post.setTopic(this);
+        lastPost = post;
+        lastPostDate = post.getDate();
         return posts.add(post);
     }
 
@@ -90,11 +97,23 @@ public class Topic extends BaseEntity {
     }
 
     public Post getLastPost() {
-        return posts.get(posts.size() - 1);
+        return lastPost;
+    }
+
+    public void setLastPost(Post lastPost) {
+        this.lastPost = lastPost;
     }
 
     public Integer getLastPage() {
         int PAGE_SIZE = 10;
         return (int) Math.ceil((posts.size() - 1) / PAGE_SIZE);
+    }
+
+    public Date getLastPostDate() {
+        return lastPostDate;
+    }
+
+    public void setLastPostDate(Date lastPostDate) {
+        this.lastPostDate = lastPostDate;
     }
 }

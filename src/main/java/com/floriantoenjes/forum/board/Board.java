@@ -6,6 +6,7 @@ import com.floriantoenjes.forum.topic.Topic;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,5 +47,12 @@ public class Board extends BaseEntity {
     public boolean addTopic(Topic topic) {
         topic.setBoard(this);
         return this.topics.add(topic);
+    }
+
+    public Topic getLastTopic() {
+        if (topics.size() > 0) {
+            return topics.get(topics.size() - 1);
+        }
+        return null;
     }
 }

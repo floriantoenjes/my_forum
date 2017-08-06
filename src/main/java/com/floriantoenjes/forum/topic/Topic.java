@@ -107,7 +107,7 @@ public class Topic extends BaseEntity {
 
     public Integer getLastPage() {
         int PAGE_SIZE = 10;
-        return (int) Math.ceil((posts.size() - 1) / PAGE_SIZE);
+        return (int) Math.ceil( (double) (posts.size()) / PAGE_SIZE);
     }
 
     public Date getLastPostDate() {
